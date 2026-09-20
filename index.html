@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Grade 2 English - Vocab & Spelling</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Mars / Space Theme */
+            --bg-dark: #0f0505;
+            --panel-bg: #1a0a0a;
+            --neon-blue: #ff6600; /* Mars Orange */
+            --neon-purple: #cc0000; /* Crimson Red */
+            --neon-pink: #ffaa00; /* Solar Yellow */
+            --neon-green: #39ff14; /* Keep green for correct answers */
+            --neon-red: #ff073a;
+            --text-main: #ffffff;
+            --text-muted: #b6a39f;
+            --radius-lg: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+            background-image: 
+              radial-gradient(circle at 15% 40%, rgba(255, 102, 0, 0.08), transparent 30%),
+              radial-gradient(circle at 85% 60%, rgba(204, 0, 0, 0.08), transparent 30%);
+        }
+
+        #particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .header-banner {
+            background-color: rgba(15, 5, 5, 0.95);
+            border-bottom: 2px solid var(--neon-purple);
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 25px rgba(204, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .header-banner h1 {
+            margin: 0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-purple);
+        }
+
+        .stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        #app-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .level-card {
+            background: var(--panel-bg);
+            border: 2px solid #3d1a1a;
+            border-radius: var(--radius-lg);
+            padding: 2.2rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card:hover {
+            transform: scale(1.03) translateY(-4px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.35), inset 0 0 10px rgba(255, 102, 0, 0.15);
+        }
+
+        .level-card h2, .level-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue);
+            margin-top: 1rem;
+            text-transform: uppercase;
+        }
+
+        .level-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--neon-purple);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .action-btn {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 14px;
+            background: rgba(26, 10, 10, 0.9);
+            border: 2px solid #5a2a2a;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            color: white;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            border-color: var(--neon-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3);
+            color: var(--neon-blue);
+        }
+        
+        .action-btn:hover:not(:disabled)::before { left: 100%; }
+        .action-btn:active:not(:disabled) { transform: translateY(1px); }
+
+        .btn-correct { background-color: rgba(57, 255, 20, 0.2) !important; border-color: var(--neon-green) !important; box-shadow: 0 0 15px var(--neon-green) !important; color: var(--neon-green) !important; }
+        .btn-wrong { background-color: rgba(255, 7, 58, 0.2) !important; border-color: var(--neon-red) !important; box-shadow: 0 0 15px var(--neon-red) !important; color: var(--neon-red) !important; }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .nav-buttons { flex-direction: column; }
+            .nav-buttons .action-btn { width: 100% !important; margin-top: 0; }
+        }
+
+        .reading-container {
+            background: var(--panel-bg);
+            padding: 2.2rem;
+            border-radius: var(--radius-lg);
+            border: 2px solid #3d1a1a;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .reading-container h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 2px solid #5a2a2a;
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--neon-blue);
+            margin-top: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
+        }
+
+        .flashcard-scene {
+            width: 100%;
+            height: 360px;
+            perspective: 1000px;
+            margin: 1.8rem 0;
+        }
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 2px solid var(--neon-purple);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 0 20px rgba(204, 0, 0, 0.2);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            color: var(--neon-pink);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background: var(--bg-dark);
+            color: var(--neon-blue);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.2);
+            justify-content: flex-start;
+            overflow-y: auto;
+        }
+
+        .flashcard-examples {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            text-align: left;
+            width: 100%;
+            border-top: 1px dashed #5a2a2a;
+            padding-top: 15px;
+            font-family: 'Roboto', sans-serif;
+            text-transform: none;
+            text-shadow: none;
+        }
+
+        .example-item {
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .example-en {
+            color: var(--neon-pink);
+            font-weight: bold;
+        }
+
+        .example-zh {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.96); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop { animation: popIn 0.3s ease-out forwards; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-8px); }
+        }
+        .shake { animation: shake 0.4s ease-in-out; }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    
+    <header class="header-banner">
+        <h1>Learning Explorer // Grade 2</h1>
+        <div class="stats">
+            <span id="xp-counter">⭐ 0 XP</span>
+        </div>
+    </header>
+    
+    <main id="app-container"></main>
+
+    <script>
+        function initParticles() {
+            const canvas = document.getElementById('particles');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particlesArray = [];
+            const colors = ['#ff6600', '#cc0000', '#ffaa00', '#ff3333'];
+
+            for (let i = 0; i < 45; i++) {
+                particlesArray.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 1,
+                    speedY: Math.random() * 0.8 - 0.4,
+                    speedX: Math.random() * 0.8 - 0.4,
+                    color: colors[Math.floor(Math.random() * colors.length)]
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    let p = particlesArray[i];
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.y > canvas.height) p.y = 0;
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('particles');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // --- COURSE DATA ---
+        const courseData = {
+          levels: [
+            {
+              id: "grade2-module1",
+              title: "Vocab & Spelling",
+              description: "Practice your spelling words and vocabulary!",
+              image: "https://placehold.co/800x400/1a0a0a/ffaa00?text=Grade+2+English",
+              vocabulary: [
+                { word: "compliment", chinese: "讚美", icon: "💬", examples: [{ en: "A compliment is a nice thing to say about someone.", zh: "讚美是說關於某人的好話。" }] },
+                { word: "panicked", chinese: "驚慌", icon: "😱", examples: [{ en: "If you panicked, you suddenly felt afraid.", zh: "如果你驚慌失措，你會突然感到害怕。" }] },
+                { word: "prohibited", chinese: "禁止的", icon: "🚫", examples: [{ en: "If something is prohibited, it is NOT allowed.", zh: "如果某事被禁止，這是不被允許的。" }] },
+                { word: "ridiculous", chinese: "荒謬的 / 可笑的", icon: "🤡", examples: [{ en: "Wearing a hat with three bananas on top looks ridiculous.", zh: "戴著一頂上面有三根香蕉的帽子看起來很可笑。" }] },
+                { word: "cautiously", chinese: "小心地", icon: "🚶", examples: [{ en: "She crossed the road cautiously to avoid getting hit by a car.", zh: "她小心翼翼地過馬路，以免被車撞到。" }] },
+                { word: "local", chinese: "當地的", icon: "🏡", examples: [{ en: "We buy our vegetables from the local farm.", zh: "我們從當地的農場買蔬菜。" }] },
+                { word: "elected", chinese: "當選", icon: "🗳️", examples: [{ en: "The new president was elected because many people voted for him.", zh: "新總統當選是因為很多人投票給他。" }] },
+                { word: "discussed", chinese: "討論", icon: "💬", examples: [{ en: "We discussed our plans for the weekend.", zh: "我們討論了週末的計劃。" }] },
+                { word: "mocked", chinese: "嘲笑", icon: "😏", examples: [{ en: "He mocked his friend for wearing mismatched socks.", zh: "他嘲笑他的朋友穿著不搭配的襪子。" }] },
+                { word: "jammed", chinese: "卡住 / 擠滿", icon: "🚪", examples: [{ en: "The door was jammed and wouldn't open.", zh: "門卡住了，無法打開。" }] }, 
+                { word: "scribbled", chinese: "潦草地寫 / 亂塗", icon: "✏️", examples: [{ en: "He scribbled a note on a piece of paper.", zh: "他在一張紙上潦草地寫了一個便條。" }] },
+                { word: "smirked", chinese: "得意地笑 / 傻笑", icon: "😏", examples: [{ en: "He smirked after winning the game.", zh: "他在贏得比賽後得意地笑了。" }] },
+                { word: "tryouts", chinese: "選拔賽 / 試鏡", icon: "🏆", examples: [{ en: "She attended the tryouts for the school play.", zh: "她參加了學校戲劇的選拔賽。" }] },
+                { word: "wistfully", chinese: "渴望地 / 傷感地", icon: "😔", examples: [{ en: "He looked wistfully at the old photographs.", zh: "他傷感地看著舊照片。" }] },
+                { word: "bellowed", chinese: "大聲喊叫", icon: "📣", examples: [{ en: "The dog bellowed loudly when it saw the stranger.", zh: "當狗看到陌生人時，它大聲吠叫。" }] },
+                { word: "bounce", chinese: "彈跳 / 反彈", icon: "🏀", examples: [{ en: "The ball bounced off the wall and hit the window.", zh: "球從牆上彈起來，撞到了窗戶。" }] },
+                { word: "carefree", chinese:"無憂無慮的", icon:"😎", examples:[{en:"She spent a carefree day at the beach.", zh:"她在海灘度過了一個無憂無慮的日子。"}]},
+                { word: "cool", chinese:"酷的 / 很棒的", icon:"😎😏", examples:[{en:"He has a cool skateboard.", zh:"他有一個很棒的滑板。"}]},
+                { word: "grin", chinese:"咧嘴笑 / 露齒笑", icon:"😁", examples:[{en:"He grinned when he saw the surprise.", zh:"當他看到驚喜時，他咧嘴笑了。"}]},
+                { word: "guards", chinese:"守衛 / 警衛", icon:"🛡️🚶", examples:[{en:"The guards protected the castle.", zh:"守衛保護著城堡。"}]},
+                { word: "images", chinese:"圖片", icon:"🖼️", examples:[{en:"The images show the beautiful landscape.", zh:"這些圖片展示了美麗的風景。"}]},
+                { word: "might", chinese:"全力/ 可能 / 也許", icon:"🤔", examples:[{en:"He tried with all his might to open the door. /It might rain tomorrow.", zh:"他竭盡全力想要打開那扇門。/ 明天可能會下雨。"}]},
+                { word: "munch", chinese:"大口咀嚼 / 狼吞虎嚥", icon:"😋", examples:[{en:"He munched on the crunchy apple.", zh:"他大口咀嚼著脆脆的蘋果。"}]},
+                { word: "rough", chinese:"粗糙的 / 粗略的", icon:"🪵", examples:[{en:"The surface of the rock was rough. /No one wants to play with him because he is rough.", zh:"岩石的表面很粗糙。/ 沒有人想和他一起玩，因為他很粗魯。"}]},
+                { word: "serious", chinese:"嚴肅的 / 認真的", icon:"😐", examples:[{en:"He looked serious during the meeting.", zh:"他在會議中看起來很嚴肅。"}]}
+              ],
+              unscrambleWords: [
+                { word: "rest", hint: "To relax or sleep", emoji: "😴" },
+                { word: "melt", hint: "Ice does this in the sun", emoji: "🧊☀️" },
+                { word: "job", hint: "Work you do to earn money", emoji: "💼" },
+                { word: "dot", hint: "A small round mark", emoji: "🔵" },
+                { word: "plum", hint: "A sweet purple fruit", emoji: "🫐" },
+                { word: "shut", hint: "To close something (like a door)", emoji: "🚪" },
+                { word: "puddle", hint: "A small pool of water after rain", emoji: "💧" },
+                { word: "helmet", hint: "You wear it to protect your head", emoji: "🪖" },
+                { word: "jam", hint: "Sweet fruit spread for toast", emoji: "🍓🍞" },
+                { word: "glad", hint: "Feeling happy", emoji: "😊" },
+                { word: "mask", hint: "You wear it to cover your face", emoji: "🎭" },
+                { word: "win", hint: "To come in first place", emoji: "🏆" },
+                { word: "list", hint: "Things written down one below another", emoji: "📝" },
+                { word: "rip", hint: "To tear a piece of paper", emoji: "📄⚡" },
+                { word: "picnic", hint: "Eating a meal outside on a blanket", emoji: "🧺🥪" },
+                { word: "sandwich", hint: "Food between two slices of bread", emoji: "🥪" }
+              ]
+            }
+          ]
+        };
+
+        // --- APPLICATION LOGIC ---
+        const appContainer = document.getElementById('app-container');
+        let currentLevel = null;
+        let userXP = parseInt(localStorage.getItem('englishLabXP')) || 0;
+        let currentFlashcardIndex = 0;
+        let currentVocabUnscrambleIndex = 0;
+
+        function init() {
+            initParticles();
+            updateXP(0);
+            renderHome();
+        }
+
+        function updateXP(amount) {
+            userXP += amount;
+            localStorage.setItem('englishLabXP', userXP);
+            document.getElementById('xp-counter').textContent = `⭐ ${userXP} XP`;
+        }
+
+        function renderHome() {
+            appContainer.innerHTML = `
+                <div class="card-grid animate-pop">
+                    ${courseData.levels.map(level => `
+                        <div class="level-card" onclick="startLevel('${level.id}')">
+                            <img src="${level.image}" alt="${level.title}" class="level-image">
+                            <h2>${level.title}</h2>
+                            <p style="color: var(--text-muted); line-height: 1.5;">${level.description}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function startLevel(levelId) {
+            currentLevel = courseData.levels.find(l => l.id === levelId);
+            renderMenu();
+        }
+
+        function renderMenu() {
+            appContainer.innerHTML = `
+                <button class="action-btn" style="width:auto; margin-bottom: 1rem;" onclick="renderHome()">← Switch Level</button>
+                <h1 style="text-align:center; font-family:'Orbitron', sans-serif; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue);">${currentLevel.title.toUpperCase()}</h1>
+                <div class="card-grid animate-pop">
+                    <div class="level-card" onclick="startFlashcards()">
+                        <div style="font-size: 3rem;">🎴</div>
+                        <h3>Vocab Flashcards</h3>
+                    </div>
+                    <div class="level-card" onclick="startVocabUnscramble()">
+                        <div style="font-size: 3rem;">🔀</div>
+                        <h3>Unscramble Vocab</h3>
+                    </div>
+                    
+                    <!-- Links to other lessons -->
+                    <div class="level-card" onclick="window.location.href='Lesson4Intro.html'">
+                        <div style="font-size: 3rem;">📝</div>
+                        <h3>Lesson 4</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">(Click to open)</p>
+                    </div>
+                    <div class="level-card" onclick="window.location.href='Lesson 5.html'">
+                        <div style="font-size: 3rem;">🧩</div>
+                        <h3>Lesson 5</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">(Click to open)</p>
+                    </div>
+                    <div class="level-card" onclick="window.location.href='lesson_6_count_and_noncount_nouns.html'">
+                        <div style="font-size: 3rem;">🔗</div>
+                        <h3>Lesson 6</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">(Click to open)</p>
+                    </div>
+                    
+                    <!-- Final Test Section -->
+                    <div class="level-card" onclick="window.location.href='Test_unit 4_6.html'">
+                        <div style="font-size: 3rem;">🏆</div>
+                        <h3>Final Test</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">(Click to open)</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- ACTIVITY: FLASHCARDS ---
+        function startFlashcards() {
+            currentFlashcardIndex = 0;
+            renderFlashcardUI();
+        }
+
+        function renderFlashcardUI() {
+            const vocab = currentLevel.vocabulary;
+            const currentCard = vocab[currentFlashcardIndex];
+            
+            let examplesHTML = '';
+            if (currentCard.examples && currentCard.examples.length > 0) {
+                examplesHTML = `<div class="flashcard-examples">` + 
+                    currentCard.examples.map(ex => `
+                        <div class="example-item">
+                            <div class="example-en">${ex.en}</div>
+                            <div class="example-zh">${ex.zh}</div>
+                        </div>
+                    `).join('') + `</div>`;
+            }
+
+            appContainer.innerHTML = `
+                <button class="action-btn" style="width:auto; margin-bottom: 1rem;" onclick="renderMenu()">← Back to Hub</button>
+                <div class="reading-container animate-pop" style="text-align:center;">
+                    <h2 style="margin-top:0;">Vocabulary Terminal</h2>
+                    <p style="color:var(--text-muted);">Card ${currentFlashcardIndex + 1} of ${vocab.length} (Click card to flip)</p>
+                    
+                    <div class="flashcard-scene" onclick="flipCard(this)">
+                        <div class="flashcard">
+                            <div class="flashcard-face flashcard-front">
+                                ${currentCard.word}
+                            </div>
+                            <div class="flashcard-face flashcard-back">
+                                <div style="font-size: 2.8rem; margin: 15px 0 5px 0;">${currentCard.icon}</div>
+                                <div style="font-size: 1.5rem; margin-bottom: 10px;">${currentCard.chinese}</div>
+                                ${examplesHTML}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-buttons">
+                        <button class="action-btn" style="width:48%;" onclick="navigateFlashcard(-1)">Previous</button>
+                        <button class="action-btn" style="width:48%;" onclick="navigateFlashcard(1)">Next</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function flipCard(sceneElement) {
+            const card = sceneElement.querySelector('.flashcard');
+            card.classList.toggle('is-flipped');
+        }
+
+        function navigateFlashcard(direction) {
+            const vocab = currentLevel.vocabulary;
+            currentFlashcardIndex += direction;
+            if (currentFlashcardIndex < 0) currentFlashcardIndex = vocab.length - 1;
+            if (currentFlashcardIndex >= vocab.length) currentFlashcardIndex = 0;
+            renderFlashcardUI();
+        }
+
+        // --- ACTIVITY: UNSCRAMBLE VOCAB ---
+        function startVocabUnscramble() {
+            currentVocabUnscrambleIndex = 0;
+            renderVocabUnscramble();
+        }
+
+        function scrambleString(str) {
+            let arr = str.split('');
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            let scrambled = arr.join('');
+            if (scrambled === str && str.length > 3) return scrambleString(str);
+            return scrambled;
+        }
+
+        function renderVocabUnscramble() {
+            const wordsList = currentLevel.unscrambleWords;
+            const currentItem = wordsList[currentVocabUnscrambleIndex];
+            const originalWord = currentItem.word;
+            const scrambledWord = scrambleString(originalWord);
+            
+            appContainer.innerHTML = `
+                <button class="action-btn" style="width:auto; margin-bottom: 1rem;" onclick="renderMenu()">← Back to Hub</button>
+                <div class="reading-container animate-pop" style="text-align:center;">
+                    <div style="display:flex; justify-content:space-between; color:var(--text-muted); margin-bottom:1rem;">
+                        <span>Word ${currentVocabUnscrambleIndex + 1} of ${wordsList.length}</span>
+                    </div>
+                    <h2 style="margin-top:0;">Unscramble the Word</h2>
+                    
+                    <div style="font-size: 4rem; margin: 1rem 0;">${currentItem.emoji}</div>
+                    <p style="color: var(--text-muted); font-size: 1.2rem; font-style: italic;">Hint: ${currentItem.hint}</p>
+                    
+                    <div style="font-size: 2.8rem; font-weight: bold; letter-spacing: 8px; color: var(--neon-pink); margin: 1.8rem 0; font-family: 'Orbitron', sans-serif;">
+                        ${scrambledWord.toUpperCase()}
+                    </div>
+                    
+                    <input type="text" id="unscramble-input" placeholder="Type unscrambled word..." autocomplete="off">
+                    
+                    <button class="action-btn" onclick="checkVocabUnscramble('${originalWord}')">Verify Solution</button>
+                </div>
+            `;
+        }
+
+        function checkVocabUnscramble(correctWord) {
+            const inputEl = document.getElementById('unscramble-input');
+            const userWord = inputEl.value.trim().toLowerCase();
+            
+            if (userWord === correctWord.toLowerCase()) {
+                inputEl.style.borderColor = 'var(--neon-green)';
+                inputEl.style.boxShadow = '0 0 15px var(--neon-green)';
+                updateXP(15);
+                setTimeout(() => {
+                    currentVocabUnscrambleIndex++;
+                    if (currentVocabUnscrambleIndex >= currentLevel.unscrambleWords.length) {
+                        alert("Great job! You unscrambled all the words! (+50 XP Bonus)");
+                        updateXP(50);
+                        renderMenu();
+                    } else {
+                        renderVocabUnscramble();
+                    }
+                }, 900);
+            } else {
+                inputEl.style.borderColor = 'var(--neon-red)';
+                inputEl.classList.add('shake');
+                setTimeout(() => inputEl.classList.remove('shake'), 400);
+            }
+        }
+
+        // Initialize application on load
+        init();
+    </script>
+</body>
+</html>
