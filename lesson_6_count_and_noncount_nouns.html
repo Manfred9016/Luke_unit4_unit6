@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 6: Count and Noncount Nouns</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0fdf4;
+            background-image: radial-gradient(#bbf7d0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .draggable-item {
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .draggable-item:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+        .draggable-item.dragging {
+            opacity: 0.5;
+        }
+
+        .drop-zone {
+            min-height: 150px;
+            transition: background-color 0.3s;
+        }
+        .drop-zone.drag-over {
+            background-color: #e0e7ff; /* light blue */
+            border-color: #4f46e5;
+        }
+
+        .dropdown-input {
+            appearance: none;
+            background-color: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 0.25rem 1.5rem 0.25rem 0.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            outline: none;
+            cursor: pointer;
+            text-align: center;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.25rem center;
+            background-size: 1rem;
+            transition: all 0.2s;
+        }
+        
+        .dropdown-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Correct/Incorrect state styles */
+        .correct-bg {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534 !important;
+        }
+        .incorrect-bg {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 text-gray-800">
+
+    <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border-4 border-white">
+        
+        <header class="bg-gradient-to-r from-teal-400 to-blue-500 p-8 text-center relative overflow-hidden">
+            <div class="relative z-10">
+                <span class="bg-yellow-400 text-yellow-900 text-sm font-bold uppercase tracking-wider py-1 px-3 rounded-full mb-4 inline-block shadow-sm">Lesson 6</span>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">Count and Noncount Nouns</h1>
+            </div>
+            <!-- Decorative background elements -->
+            <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-white opacity-10"></div>
+            <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 rounded-full bg-white opacity-10"></div>
+        </header>
+
+        <div class="p-6 md:p-10 space-y-12">
+            
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-yellow-400 text-yellow-900 rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">A</div>
+                    <h2 class="text-2xl font-bold text-gray-700">Look and Learn 🧠</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Count Noun Card -->
+                    <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 shadow-sm">
+                        <h3 class="text-xl font-bold text-blue-700 mb-4 border-b-2 border-blue-200 pb-2 flex items-center gap-2">
+                            <span>🔵</span> Count Noun
+                        </h3>
+                        <div class="space-y-4 text-lg">
+                            <div class="grid grid-cols-2 gap-4 items-center">
+                                <span class="text-gray-500 font-semibold text-sm uppercase">Singular</span>
+                                <div>
+                                    <p class="font-bold text-gray-800">a bus</p>
+                                    <p class="font-bold text-gray-800">an egg</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 items-center border-t border-blue-100 pt-3">
+                                <span class="text-gray-500 font-semibold text-sm uppercase">Plural</span>
+                                <div>
+                                    <p class="font-bold text-blue-600">buses</p>
+                                    <p class="font-bold text-blue-600">eggs</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 items-center border-t border-blue-100 pt-3">
+                                <span class="text-gray-500 font-semibold text-sm uppercase">with 'some'</span>
+                                <div>
+                                    <p class="font-bold text-gray-800">some <span class="text-blue-600">cookies</span></p>
+                                    <p class="font-bold text-gray-800">some <span class="text-blue-600">oranges</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Noncount Noun Card -->
+                    <div class="bg-green-50 border-2 border-green-200 rounded-2xl p-6 shadow-sm">
+                        <h3 class="text-xl font-bold text-green-700 mb-4 border-b-2 border-green-200 pb-2 flex items-center gap-2">
+                            <span>🟩</span> Noncount Noun
+                        </h3>
+                        <div class="space-y-4 text-lg">
+                            <div class="grid grid-cols-2 gap-4 items-center h-full">
+                                <span class="text-gray-500 font-semibold text-sm uppercase">Standalone</span>
+                                <div>
+                                    <p class="font-bold text-gray-800">water</p>
+                                    <p class="font-bold text-gray-800">cheese</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 items-center border-t border-green-100 pt-3 opacity-0 hidden md:block">
+                                <!-- Spacer to align with the plural row on the left -->
+                                <span>&nbsp;</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 items-center border-t border-green-100 pt-3">
+                                <span class="text-gray-500 font-semibold text-sm uppercase">with 'some'</span>
+                                <div>
+                                    <p class="font-bold text-gray-800">some <span class="text-green-600">milk</span></p>
+                                    <p class="font-bold text-gray-800">some <span class="text-green-600">ice cream</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-teal-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">B</div>
+                    <h2 class="text-2xl font-bold text-gray-700">Count or Noncount? Sorting Game 🎯</h2>
+                </div>
+                
+                <p class="text-gray-600 mb-4 font-medium">Drag and drop the words into the correct boxes.</p>
+
+                <!-- Word Bank -->
+                <div id="word-bank" class="drop-zone bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-4 mb-6 flex flex-wrap gap-3 items-center justify-center min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <!-- Count items -->
+                    <div id="word-1" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">an orange</div>
+                    <div id="word-2" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">2 cookies</div>
+                    <div id="word-3" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">3 leaves</div>
+                    <div id="word-4" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">a sandwich</div>
+                    <div id="word-5" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">2 bananas</div>
+                    <div id="word-6" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">3 pens</div>
+                    
+                    <!-- Noncount items -->
+                    <div id="word-7" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">water</div>
+                    <div id="word-8" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">bread</div>
+                    <div id="word-9" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">homework</div>
+                    <div id="word-10" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">ice cream</div>
+                    <div id="word-11" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">juice</div>
+                    <div id="word-12" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">money</div>
+                </div>
+
+                <!-- Drop Zones -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50/50 border-2 border-blue-200 rounded-2xl flex flex-col overflow-hidden shadow-inner">
+                        <div class="bg-blue-100 py-3 text-center border-b border-blue-200">
+                            <h3 class="font-bold text-blue-800">Count Nouns</h3>
+                        </div>
+                        <div id="zone-count" class="drop-zone p-4 flex-1 flex flex-wrap gap-2 items-start content-start" data-expected="count" ondrop="drop(event)" ondragover="allowDrop(event)">
+                            <!-- Drop items here -->
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50/50 border-2 border-green-200 rounded-2xl flex flex-col overflow-hidden shadow-inner">
+                        <div class="bg-green-100 py-3 text-center border-b border-green-200">
+                            <h3 class="font-bold text-green-800">Noncount Nouns</h3>
+                        </div>
+                        <div id="zone-noncount" class="drop-zone p-4 flex-1 flex flex-wrap gap-2 items-start content-start" data-expected="noncount" ondrop="drop(event)" ondragover="allowDrop(event)">
+                            <!-- Drop items here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="flex items-center gap-3 mb-6 mt-12">
+                    <div class="bg-indigo-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">C</div>
+                    <h2 class="text-2xl font-bold text-gray-700">a / an / some + Noun ✍️</h2>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border-t-4 border-indigo-400">
+                    <p class="text-gray-600 mb-6 font-medium">Choose the correct word for each blank.</p>
+                    
+                    <div class="space-y-6 text-lg md:text-xl text-gray-700">
+                        
+                        <!-- Sentence 1 -->
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 bg-indigo-50/50 p-4 rounded-xl border border-indigo-50">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">1</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    I see 
+                                    <select class="dropdown-input answer-select" data-answer="a">
+                                        <option value=""></option>
+                                        <option value="a">a</option>
+                                        <option value="an">an</option>
+                                        <option value="some">some</option>
+                                    </select>
+                                    sandwich. I see
+                                    <select class="dropdown-input answer-select" data-answer="some">
+                                        <option value=""></option>
+                                        <option value="a">a</option>
+                                        <option value="an">an</option>
+                                        <option value="some">some</option>
+                                    </select>
+                                    juice. 🥪🧃
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sentence 2 -->
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">2</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    I see 
+                                    <select class="dropdown-input answer-select" data-answer="an">
+                                        <option value=""></option>
+                                        <option value="a">a</option>
+                                        <option value="an">an</option>
+                                        <option value="some">some</option>
+                                    </select>
+                                    apple. I see
+                                    <select class="dropdown-input answer-select" data-answer="some">
+                                        <option value=""></option>
+                                        <option value="a">a</option>
+                                        <option value="an">an</option>
+                                        <option value="some">some</option>
+                                    </select>
+                                    cookies. 🍎🍪
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sentence 3 -->
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 bg-indigo-50/50 p-4 rounded-xl border border-indigo-50">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">3</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    I see 
+                                    <select class="dropdown-input answer-select" data-answer="some">
+                                        <option value=""></option>
+                                        <option value="a">a</option>
+                                        <option value="an">an</option>
+                                        <option value="some">some</option>
+                                    </select>
+                                    oranges. I see
+                                    <select class="dropdown-input answer-select" data-answer="some">
+                                        <option value=""></option>
+                                        <option value="a">a</option>
+                                        <option value="an">an</option>
+                                        <option value="some">some</option>
+                                    </select>
+                                    bread. 🍊🍞
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+
+            <div class="text-center pt-8">
+                <button id="check-btn" class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-extrabold py-4 px-12 rounded-full shadow-lg transition-all transform hover:-translate-y-1 hover:shadow-xl text-xl w-full md:w-auto focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    Check Answers ✨
+                </button>
+            </div>
+
+            <div id="results-container" class="hidden mt-6 p-8 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-300 text-center shadow-inner">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2" id="result-title">Great Effort!</h2>
+                <div id="score-display" class="text-5xl font-black text-indigo-600 mb-3 tracking-tight"></div>
+                <p class="text-lg text-slate-600 font-medium mb-4">
+                    Review your answers. Green boxes mean correct, red means incorrect or missed.
+                </p>
+                <button id="retry-btn" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-full transition-colors focus:outline-none">
+                    Try Again ↺
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- Drag and Drop Logic ---
+        function allowDrop(ev) {
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = "move";
+            // Visual feedback
+            if(ev.target.classList.contains('drop-zone')) {
+                ev.target.classList.add('drag-over');
+            }
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+            setTimeout(() => {
+                ev.target.classList.add('dragging');
+            }, 0);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            const draggedElement = document.getElementById(data);
+            
+            // Find the closest drop zone
+            const dropZone = ev.target.closest('.drop-zone');
+            
+            if (dropZone && draggedElement) {
+                dropZone.appendChild(draggedElement);
+            }
+
+            // Clean up styling
+            draggedElement.classList.remove('dragging');
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.classList.remove('drag-over');
+            });
+        }
+
+        // Remove drag-over visual when leaving
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.addEventListener('dragleave', (e) => {
+                zone.classList.remove('drag-over');
+            });
+        });
+
+
+        // --- Validation Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkBtn = document.getElementById('check-btn');
+            const retryBtn = document.getElementById('retry-btn');
+            const resultsContainer = document.getElementById('results-container');
+            const scoreDisplay = document.getElementById('score-display');
+            const resultTitle = document.getElementById('result-title');
+            
+            const draggables = document.querySelectorAll('.draggable-item');
+            const dropdowns = document.querySelectorAll('.answer-select');
+            
+            const totalPoints = draggables.length + dropdowns.length; // 12 + 6 = 18
+
+            checkBtn.addEventListener('click', () => {
+                let score = 0;
+
+                // 1. Grade Drag and Drop
+                draggables.forEach(item => {
+                    item.classList.remove('correct-bg', 'incorrect-bg');
+                    const expectedType = item.dataset.type; // "count" or "noncount"
+                    const currentContainerId = item.parentElement.id;
+                    
+                    if (currentContainerId === 'zone-count' && expectedType === 'count') {
+                        item.classList.add('correct-bg');
+                        score++;
+                    } else if (currentContainerId === 'zone-noncount' && expectedType === 'noncount') {
+                        item.classList.add('correct-bg');
+                        score++;
+                    } else {
+                        // In word bank or wrong zone
+                        item.classList.add('incorrect-bg');
+                    }
+                    // Disable dragging after submit
+                    item.setAttribute('draggable', 'false');
+                });
+
+                // 2. Grade Dropdowns
+                dropdowns.forEach(select => {
+                    select.classList.remove('correct-bg', 'incorrect-bg');
+                    const userAnswer = select.value;
+                    const correctAnswer = select.dataset.answer;
+
+                    if (userAnswer === correctAnswer) {
+                        select.classList.add('correct-bg');
+                        score++;
+                    } else {
+                        select.classList.add('incorrect-bg');
+                    }
+                    // Disable changing after submit
+                    select.disabled = true;
+                });
+
+                // Show Results
+                scoreDisplay.textContent = `${score} / ${totalPoints}`;
+                
+                if (score === totalPoints) {
+                    resultTitle.textContent = "Perfect Score! 🏆🌟";
+                } else if (score >= totalPoints - 4) {
+                    resultTitle.textContent = "Great Job! ⭐";
+                } else {
+                    resultTitle.textContent = "Keep Practicing! 💪";
+                }
+
+                resultsContainer.classList.remove('hidden');
+                checkBtn.classList.add('hidden');
+                
+                // Scroll to results
+                resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            });
+
+            // Retry logic
+            retryBtn.addEventListener('click', () => {
+                // Reset Dropdowns
+                dropdowns.forEach(select => {
+                    select.value = "";
+                    select.classList.remove('correct-bg', 'incorrect-bg');
+                    select.disabled = false;
+                });
+
+                // Reset Drag and Drop items
+                const wordBank = document.getElementById('word-bank');
+                draggables.forEach(item => {
+                    item.classList.remove('correct-bg', 'incorrect-bg');
+                    item.setAttribute('draggable', 'true');
+                    wordBank.appendChild(item); // Move back to word bank
+                });
+
+                resultsContainer.classList.add('hidden');
+                checkBtn.classList.remove('hidden');
+                
+                // Scroll back to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

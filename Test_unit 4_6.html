@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Practice Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .input-base {
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            outline: none;
+            transition: all 0.2s ease-in-out;
+        }
+        .input-base:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        .correct {
+            border-color: #22c55e !important;
+            background-color: #dcfce7 !important;
+            color: #166534 !important;
+        }
+        .incorrect {
+            border-color: #ef4444 !important;
+            background-color: #fee2e2 !important;
+            color: #991b1b !important;
+        }
+        .needs-grading {
+            border-color: #3b82f6 !important;
+            background-color: #eff6ff !important;
+        }
+    </style>
+</head>
+<body class="bg-blue-50 text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+        <header class="bg-blue-600 text-white p-6 text-center">
+            <h1 class="text-3xl font-bold mb-2">English Practice Test 📝</h1>
+            <p class="text-blue-100 text-lg">Read carefully and do your best!</p>
+        </header>
+
+        <main class="p-6 md:p-10 space-y-12">
+            
+            <section class="space-y-6">
+                <div class="bg-orange-100 p-4 rounded-xl shadow-sm border border-orange-200">
+                    <h2 class="text-2xl font-bold text-orange-800 mb-4 flex items-center gap-2">
+                        <span>📖</span> Section 1: Reading
+                    </h2>
+                    <p class="text-lg leading-relaxed text-gray-800 bg-white p-6 rounded-lg shadow-inner">
+                        <strong>Directions:</strong> Read the story and answer the questions below. <br><br>
+                        Leo spent a sunny Sunday with his older sister at the Taipei Zoo because he loves animals. They took the MRT very early in the morning. They stopped to eat some dumplings for breakfast on the way to the panda enclosure. Once they arrived at the exhibit, his sister bought the tickets, then showed him where to stand. While they waited for the pandas to come out, she told Leo stories about her favorite animals.<br><br>
+                        Suddenly, a giant panda walked out from behind the bamboo trees. Leo quickly grabbed his camera as his sister pointed at the panda eating. A few moments later, Leo snapped a perfect photo of the panda holding the bamboo. His sister was so proud of his photo that she bought him a panda keychain as a souvenir!
+                    </p>
+                </div>
+
+                <div class="space-y-4 text-lg" id="reading-questions">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold">Who are the characters in this story?</label>
+                        <input type="text" class="input-base manual-grade w-full p-2" placeholder="Type your answer here...">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold">When does the story take place?</label>
+                        <input type="text" class="input-base manual-grade w-full p-2" placeholder="Type your answer here...">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold">What happened in the story?</label>
+                        <input type="text" class="input-base manual-grade w-full p-2" placeholder="Type your answer here...">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold">Where does the story take place?</label>
+                        <input type="text" class="input-base manual-grade w-full p-2" placeholder="Type your answer here...">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold">Why did Leo go to the zoo?</label>
+                        <input type="text" class="input-base manual-grade w-full p-2" placeholder="Type your answer here...">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold">How did Leo take a picture of the panda?</label>
+                        <input type="text" class="input-base manual-grade w-full p-2" placeholder="Type your answer here...">
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-gray-200">
+
+            <section class="space-y-6">
+                <div class="bg-purple-100 p-4 rounded-xl shadow-sm border border-purple-200">
+                    <h2 class="text-2xl font-bold text-purple-800 mb-2 flex items-center gap-2">
+                        <span>❓</span> Section 2: Question Words
+                    </h2>
+                    <p class="text-lg text-purple-900">Read the answers and complete the questions with appropriate question words.</p>
+                </div>
+                
+                <div class="space-y-4 text-lg bg-gray-50 p-6 rounded-xl border border-gray-100 leading-loose">
+                    <div>
+                        1. <select class="input-base auto-grade mx-2" data-answer="where">
+                            <option value=""></option><option value="who">Who</option><option value="what">What</option><option value="where">Where</option><option value="when">When</option><option value="why">Why</option><option value="how">How</option>
+                        </select> did you buy that bubble tea?<br>
+                        <span class="text-gray-500 ml-6">I bought it at the night market.</span>
+                    </div>
+                    <div>
+                        2. <select class="input-base auto-grade mx-2" data-answer="when">
+                            <option value=""></option><option value="who">Who</option><option value="what">What</option><option value="where">Where</option><option value="when">When</option><option value="why">Why</option><option value="how">How</option>
+                        </select> does the first class start?<br>
+                        <span class="text-gray-500 ml-6">The first class starts at 8 o'clock.</span>
+                    </div>
+                    <div>
+                        3. <select class="input-base auto-grade mx-2" data-answer="how">
+                            <option value=""></option><option value="who">Who</option><option value="what">What</option><option value="where">Where</option><option value="when">When</option><option value="why">Why</option><option value="how">How</option>
+                        </select> do you usually go to Taipei?<br>
+                        <span class="text-gray-500 ml-6">I usually go to Taipei by train.</span>
+                    </div>
+                    <div>
+                        4. <select class="input-base auto-grade mx-2" data-answer="why">
+                            <option value=""></option><option value="who">Who</option><option value="what">What</option><option value="where">Where</option><option value="when">When</option><option value="why">Why</option><option value="how">How</option>
+                        </select> is Kevin so happy?<br>
+                        <span class="text-gray-500 ml-6">Kevin is happy because he passed his English test.</span>
+                    </div>
+                    <div>
+                        5. <select class="input-base auto-grade mx-2" data-answer="who">
+                            <option value=""></option><option value="who">Who</option><option value="what">What</option><option value="where">Where</option><option value="when">When</option><option value="why">Why</option><option value="how">How</option>
+                        </select> cooked this delicious dinner?<br>
+                        <span class="text-gray-500 ml-6">My grandma cooked this delicious dinner.</span>
+                    </div>
+                    <div>
+                        6. <select class="input-base auto-grade mx-2" data-answer="what">
+                            <option value=""></option><option value="who">Who</option><option value="what">What</option><option value="where">Where</option><option value="when">When</option><option value="why">Why</option><option value="how">How</option>
+                        </select> are you eating for lunch?<br>
+                        <span class="text-gray-500 ml-6">I am eating beef noodles for lunch.</span>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-gray-200">
+
+            <section class="space-y-8">
+                <div class="bg-green-100 p-4 rounded-xl shadow-sm border border-green-200">
+                    <h2 class="text-2xl font-bold text-green-800 mb-2 flex items-center gap-2">
+                        <span>🍎</span> Section 3: Countable / Uncountable
+                    </h2>
+                </div>
+
+                <!-- 3.1 C or U -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">1. If a noun is Countable write 'C', for Uncountable write 'U'</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-lg bg-gray-50 p-6 rounded-xl border border-gray-100">
+                        <div class="flex justify-between items-center">Dumplings <select class="input-base auto-grade" data-answer="c"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Water <select class="input-base auto-grade" data-answer="u"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Coffee <select class="input-base auto-grade" data-answer="u"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Scooters <select class="input-base auto-grade" data-answer="c"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Papayas <select class="input-base auto-grade" data-answer="c"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Oranges <select class="input-base auto-grade" data-answer="c"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Sand <select class="input-base auto-grade" data-answer="u"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Sugar <select class="input-base auto-grade" data-answer="u"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Noodles <select class="input-base auto-grade" data-answer="c"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Beef <select class="input-base auto-grade" data-answer="u"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Milk <select class="input-base auto-grade" data-answer="u"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Soup <select class="input-base auto-grade" data-answer="u"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Mangoes <select class="input-base auto-grade" data-answer="c"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Tofu <select class="input-base auto-grade" data-answer="u"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                        <div class="flex justify-between items-center">Night markets <select class="input-base auto-grade" data-answer="c"><option value=""></option><option value="c">C</option><option value="u">U</option></select></div>
+                    </div>
+                </div>
+
+                <!-- 3.2 Quantifiers -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">2. Circle the correct 'Quantifier'</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg bg-gray-50 p-6 rounded-xl border border-gray-100">
+                        <div>A <select class="input-base auto-grade" data-answer="bowl"><option value=""></option><option value="bowl">bowl</option><option value="bottle">bottle</option></select> of beef noodle soup</div>
+                        <div>A <select class="input-base auto-grade" data-answer="cup"><option value=""></option><option value="piece">piece</option><option value="cup">cup</option></select> of bubble tea</div>
+                        <div>A <select class="input-base auto-grade" data-answer="slice"><option value=""></option><option value="slice">slice</option><option value="can">can</option></select> of pizza</div>
+                        <div>A <select class="input-base auto-grade" data-answer="box"><option value=""></option><option value="box">box</option><option value="glass">glass</option></select> of chocolates</div>
+                        <div>A <select class="input-base auto-grade" data-answer="bag"><option value=""></option><option value="bag">bag</option><option value="slice">slice</option></select> of flour</div>
+                        <div>A <select class="input-base auto-grade" data-answer="bottle"><option value=""></option><option value="bottle">bottle</option><option value="chunk">chunk</option></select> of soy sauce</div>
+                        <div>A <select class="input-base auto-grade" data-answer="piece"><option value=""></option><option value="piece">piece</option><option value="jar">jar</option></select> of cake</div>
+                        <div>A <select class="input-base auto-grade" data-answer="packet"><option value=""></option><option value="packet">packet</option><option value="bowl">bowl</option></select> of cookies</div>
+                        <div>A <select class="input-base auto-grade" data-answer="jar"><option value=""></option><option value="can">can</option><option value="jar">jar</option></select> of peanut butter</div>
+                        <div>A <select class="input-base auto-grade" data-answer="glass"><option value=""></option><option value="glass">glass</option><option value="box">box</option></select> of orange juice</div>
+                        <div>A <select class="input-base auto-grade" data-answer="cup"><option value=""></option><option value="cup">cup</option><option value="loaf">loaf</option></select> of hot tea</div>
+                        <div>A <select class="input-base auto-grade" data-answer="jug"><option value=""></option><option value="jug">jug</option><option value="slice">slice</option></select> of water</div>
+                        <div>A <select class="input-base auto-grade" data-answer="piece"><option value=""></option><option value="piece">piece</option><option value="bottle">bottle</option></select> of paper</div>
+                        <div>A <select class="input-base auto-grade" data-answer="bar"><option value=""></option><option value="bar">bar</option><option value="bowl">bowl</option></select> of soap</div>
+                        <div>A <select class="input-base auto-grade" data-answer="bowl"><option value=""></option><option value="bowl">bowl</option><option value="can">can</option></select> of rice</div>
+                    </div>
+                </div>
+
+                <!-- 3.3 Much / Many -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">3. Use 'Many' or 'Much' to complete the sentences</h3>
+                    <div class="space-y-4 text-lg bg-gray-50 p-6 rounded-xl border border-gray-100 leading-loose">
+                        <div>1. How <select class="input-base auto-grade mx-1" data-answer="much"><option value=""></option><option value="many">many</option><option value="much">much</option></select> water do I need for this recipe?</div>
+                        <div>2. I'm sorry, I don't have <select class="input-base auto-grade mx-1" data-answer="much"><option value=""></option><option value="many">many</option><option value="much">much</option></select> cash on me today.</div>
+                        <div>3. How <select class="input-base auto-grade mx-1" data-answer="many"><option value=""></option><option value="many">many</option><option value="much">much</option></select> students are in your classroom?</div>
+                        <div>4. Do you know how <select class="input-base auto-grade mx-1" data-answer="much"><option value=""></option><option value="many">many</option><option value="much">much</option></select> homework we have tonight?</div>
+                        <div>5. It's very crowded, there are too <select class="input-base auto-grade mx-1" data-answer="many"><option value=""></option><option value="many">many</option><option value="much">much</option></select> people at the station.</div>
+                        <div>6. Lisa has <select class="input-base auto-grade mx-1" data-answer="many"><option value=""></option><option value="many">many</option><option value="much">much</option></select> pencils in her pencil case.</div>
+                        <div>7. There are too <select class="input-base auto-grade mx-1" data-answer="many"><option value=""></option><option value="many">many</option><option value="much">much</option></select> scooters on the road.</div>
+                        <div>8. There isn't <select class="input-base auto-grade mx-1" data-answer="much"><option value=""></option><option value="many">many</option><option value="much">much</option></select> time left before the bell rings.</div>
+                        <div>9. We have too <select class="input-base auto-grade mx-1" data-answer="many"><option value=""></option><option value="many">many</option><option value="much">much</option></select> tests this week.</div>
+                        <div>10. Tom has <select class="input-base auto-grade mx-1" data-answer="many"><option value=""></option><option value="many">many</option><option value="much">much</option></select> video games at home.</div>
+                    </div>
+                </div>
+
+                <!-- 3.4 Any / Some -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">4. Use 'Any' or 'Some' to complete the sentences</h3>
+                    <div class="space-y-4 text-lg bg-gray-50 p-6 rounded-xl border border-gray-100 leading-loose">
+                        <div>1. Kevin needs <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="any">any</option><option value="some">some</option></select> help with his math homework.</div>
+                        <div>2. Sarah said that she doesn't have <select class="input-base auto-grade mx-1" data-answer="any"><option value=""></option><option value="any">any</option><option value="some">some</option></select> money left.</div>
+                        <div>3. Sorry, we haven't got <select class="input-base auto-grade mx-1" data-answer="any"><option value=""></option><option value="any">any</option><option value="some">some</option></select> green tea at the moment, is black tea OK?</div>
+                        <div>4. She always puts <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="any">any</option><option value="some">some</option></select> sugar in her coffee.</div>
+                        <div>5. They don't have <select class="input-base auto-grade mx-1" data-answer="any"><option value=""></option><option value="any">any</option><option value="some">some</option></select> pets.</div>
+                        <div>6. Can you buy me <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="any">any</option><option value="some">some</option></select> apples, please?</div>
+                        <div>7. I need <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="any">any</option><option value="some">some</option></select> soy sauce for my dumplings.</div>
+                        <div>8. Have you got <select class="input-base auto-grade mx-1" data-answer="any"><option value=""></option><option value="any">any</option><option value="some">some</option></select> brothers or sisters?</div>
+                        <div>9. Would you like <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="any">any</option><option value="some">some</option></select> snacks for the movie?</div>
+                        <div>10. Is there <select class="input-base auto-grade mx-1" data-answer="any"><option value=""></option><option value="any">any</option><option value="some">some</option></select> soup left in the pot?</div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-gray-200">
+
+            <section class="space-y-8">
+                <div class="bg-yellow-100 p-4 rounded-xl shadow-sm border border-yellow-200">
+                    <h2 class="text-2xl font-bold text-yellow-800 mb-2 flex items-center gap-2">
+                        <span>✏️</span> Section 4: A / AN / SOME
+                    </h2>
+                </div>
+
+                <!-- 4.1 WHAT ARE THESE THINGS -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">1. WHAT ARE THESE THINGS? Write A / AN if necessary and the name of the thing.</h3>
+                    <p class="text-gray-600 mb-4 italic">Example: "a cat", "an apple", or just "water" if uncountable.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg bg-gray-50 p-6 rounded-xl border border-gray-100">
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="tea"> (tea)</div>
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="an eraser"> (eraser)</div>
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="a scooter"> (scooter)</div>
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="rice"> (rice)</div>
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="a dumpling"> (dumpling)</div>
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="homework"> (homework)</div>
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="a night market"> (night market)</div>
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="an orange"> (orange)</div>
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="a backpack"> (backpack)</div>
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="weather"> (weather)</div>
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="a cat"> (cat)</div>
+                        <div class="flex items-center gap-3"><input type="text" class="input-base auto-grade flex-1" data-answer="a jacket"> (jacket)</div>
+                    </div>
+                </div>
+
+                <!-- 4.2 Complete Sentences -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">2. Complete the sentences with A, AN or SOME:</h3>
+                    <div class="space-y-4 text-lg bg-gray-50 p-6 rounded-xl border border-gray-100 leading-loose">
+                        <div>1. Would you like <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> bubble tea?</div>
+                        <div>2. Would you like <select class="input-base auto-grade mx-1" data-answer="a"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> bowl of beef noodles?</div>
+                        <div>3. Would you like <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> juice?</div>
+                        <div>4. Would you like <select class="input-base auto-grade mx-1" data-answer="an"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> egg for your breakfast?</div>
+                        <div>5. Would you like <select class="input-base auto-grade mx-1" data-answer="a"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> slice of papaya?</div>
+                        <div>6. Would you like <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> soy sauce for your dumplings?</div>
+                    </div>
+                </div>
+
+                <!-- 4.3 What did they buy -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">3. What did they buy? Complete the sentences with A / AN or SOME:</h3>
+                    <div class="space-y-4 text-lg bg-gray-50 p-6 rounded-xl border border-gray-100 leading-loose">
+                        <div>
+                            1. Kevin bought <select class="input-base auto-grade mx-1" data-answer="a"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> jacket, 
+                            <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> socks and 
+                            <select class="input-base auto-grade mx-1" data-answer="an"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> English dictionary.
+                        </div>
+                        <div>
+                            2. My teacher bought <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> chalk and 
+                            <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> red pens.
+                        </div>
+                        <div>
+                            3. My sister bought <select class="input-base auto-grade mx-1" data-answer="an"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> umbrella, 
+                            <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> postcards and 
+                            <select class="input-base auto-grade mx-1" data-answer="some"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> stamps.
+                        </div>
+                        <div>
+                            4. I bought <select class="input-base auto-grade mx-1" data-answer="an"><option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option></select> interesting video game!
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <div class="flex flex-col items-center mt-10">
+                <button id="check-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-full shadow-lg transition-transform transform hover:scale-105 text-xl">
+                    Check Answers ✔️
+                </button>
+                <div id="results" class="mt-6 text-2xl font-bold text-center hidden"></div>
+                <p id="teacher-note" class="mt-2 text-gray-500 hidden text-center">Note: Reading section answers will be checked by your teacher.</p>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('check-btn').addEventListener('click', function() {
+            let score = 0;
+            let totalAutoGraded = 0;
+
+            // Grade auto-graded elements (dropdowns and specific text inputs)
+            const autoElements = document.querySelectorAll('.auto-grade');
+            
+            autoElements.forEach(el => {
+                totalAutoGraded++;
+                const userAnswer = el.value.trim().toLowerCase();
+                const correctAnswer = el.getAttribute('data-answer').toLowerCase();
+
+                // Remove previous styling
+                el.classList.remove('correct', 'incorrect');
+
+                if (userAnswer === correctAnswer) {
+                    el.classList.add('correct');
+                    score++;
+                } else {
+                    el.classList.add('incorrect');
+                }
+            });
+
+            // Mark manual-graded elements for teacher review
+            const manualElements = document.querySelectorAll('.manual-grade');
+            manualElements.forEach(el => {
+                el.classList.remove('needs-grading');
+                if(el.value.trim() !== "") {
+                     el.classList.add('needs-grading');
+                }
+            });
+
+            // Display results
+            const resultsDiv = document.getElementById('results');
+            const teacherNote = document.getElementById('teacher-note');
+            
+            resultsDiv.classList.remove('hidden');
+            teacherNote.classList.remove('hidden');
+
+            const percentage = Math.round((score / totalAutoGraded) * 100);
+            
+            let message = '';
+            if (percentage >= 90) message = 'Amazing job! 🌟';
+            else if (percentage >= 70) message = 'Great work! 👍';
+            else message = 'Keep practicing! 💪';
+
+            resultsDiv.innerHTML = `You scored ${score} out of ${totalAutoGraded} (${percentage}%) <br> <span class="text-blue-600 text-3xl">${message}</span>`;
+            
+            // Scroll to bottom
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

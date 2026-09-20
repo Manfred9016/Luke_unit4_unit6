@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 5: Singular and Plural Nouns</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0f9ff;
+            background-image: radial-gradient(#bae6fd 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+
+        .draggable {
+            cursor: grab;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+        }
+        .draggable:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+        .dragging {
+            opacity: 0.5;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .drop-zone {
+            transition: all 0.2s ease;
+            min-height: 3rem;
+        }
+        .drop-zone.drag-over {
+            background-color: #e0f2fe;
+            border-color: #3b82f6;
+            border-style: dashed;
+        }
+
+        .correct-bg {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534 !important;
+        }
+        .incorrect-bg {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+        .correct-input {
+            border-color: #22c55e !important;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2) !important;
+        }
+        .incorrect-input {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+        }
+    </style>
+</head>
+<body class="text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-white mb-12">
+        
+        <header class="bg-gradient-to-r from-blue-500 to-indigo-500 p-8 text-center relative overflow-hidden">
+            <div class="relative z-10">
+                <span class="bg-yellow-400 text-yellow-900 text-sm font-bold uppercase tracking-wider py-1 px-4 rounded-full mb-4 inline-block shadow-sm">Lesson 5</span>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">Singular & Plural Nouns</h1>
+                <p class="text-blue-100 mt-2 text-lg font-semibold">Let's learn how to make words plural!</p>
+            </div>
+            <!-- Decorative circles -->
+            <div class="absolute top-0 right-0 -mr-12 -mt-12 w-40 h-40 rounded-full bg-white opacity-10"></div>
+            <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 rounded-full bg-white opacity-10"></div>
+        </header>
+
+        <div class="p-6 md:p-10 space-y-16">
+            
+            <section id="look-and-learn">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="bg-yellow-400 text-yellow-900 rounded-full w-12 h-12 flex items-center justify-center font-bold text-2xl shadow-md">1</div>
+                    <h2 class="text-3xl font-bold text-gray-700">Look and Learn 👀</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Rule 1: ~s -->
+                    <div class="bg-blue-50 rounded-2xl p-6 border-2 border-blue-200 shadow-sm">
+                        <h3 class="text-2xl font-bold text-blue-700 mb-4 flex items-center justify-between">
+                            The "~s" Rule <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded text-sm">+ s</span>
+                        </h3>
+                        <p class="text-gray-600 mb-4 text-sm font-semibold">Most regular nouns just add 's'.</p>
+                        <ul class="space-y-2 text-lg font-medium">
+                            <li class="flex justify-between border-b border-blue-100 pb-1"><span>a pen 🖊️</span> ➔ <span class="text-blue-600">pens</span></li>
+                            <li class="flex justify-between border-b border-blue-100 pb-1"><span>a car 🚗</span> ➔ <span class="text-blue-600">cars</span></li>
+                            <li class="flex justify-between pb-1"><span>a tree 🌳</span> ➔ <span class="text-blue-600">trees</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Rule 2: ~es -->
+                    <div class="bg-green-50 rounded-2xl p-6 border-2 border-green-200 shadow-sm">
+                        <h3 class="text-2xl font-bold text-green-700 mb-4 flex items-center justify-between">
+                            The "~es" Rule <span class="bg-green-200 text-green-800 px-2 py-1 rounded text-sm">+ es</span>
+                        </h3>
+                        <p class="text-gray-600 mb-4 text-sm font-semibold">Ends in s, sh, ch, or x.</p>
+                        <ul class="space-y-2 text-lg font-medium">
+                            <li class="flex justify-between border-b border-green-100 pb-1"><span>a class 🏫</span> ➔ <span class="text-green-600">classes</span></li>
+                            <li class="flex justify-between border-b border-green-100 pb-1"><span>a brush 🖌️</span> ➔ <span class="text-green-600">brushes</span></li>
+                            <li class="flex justify-between pb-1"><span>a fox 🦊</span> ➔ <span class="text-green-600">foxes</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Rule 3: ~ves -->
+                    <div class="bg-purple-50 rounded-2xl p-6 border-2 border-purple-200 shadow-sm">
+                        <h3 class="text-2xl font-bold text-purple-700 mb-4 flex items-center justify-between">
+                            The "~ves" Rule <span class="bg-purple-200 text-purple-800 px-2 py-1 rounded text-sm">+ ves</span>
+                        </h3>
+                        <p class="text-gray-600 mb-4 text-sm font-semibold">Ends in f or fe. Change f to v.</p>
+                        <ul class="space-y-2 text-lg font-medium">
+                            <li class="flex justify-between border-b border-purple-100 pb-1"><span>a thief 🦹</span> ➔ <span class="text-purple-600">thieves</span></li>
+                            <li class="flex justify-between border-b border-purple-100 pb-1"><span>a loaf 🍞</span> ➔ <span class="text-purple-600">loaves</span></li>
+                            <li class="flex justify-between pb-1"><span>a wolf 🐺</span> ➔ <span class="text-purple-600">wolves</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Rule 4: ~ies -->
+                    <div class="bg-pink-50 rounded-2xl p-6 border-2 border-pink-200 shadow-sm">
+                        <h3 class="text-2xl font-bold text-pink-700 mb-4 flex items-center justify-between">
+                            The "~ies" Rule <span class="bg-pink-200 text-pink-800 px-2 py-1 rounded text-sm">+ ies</span>
+                        </h3>
+                        <p class="text-gray-600 mb-4 text-sm font-semibold">Ends in consonant + y. Drop the y.</p>
+                        <ul class="space-y-2 text-lg font-medium">
+                            <li class="flex justify-between border-b border-pink-100 pb-1"><span>a party 🥳</span> ➔ <span class="text-pink-600">parties</span></li>
+                            <li class="flex justify-between border-b border-pink-100 pb-1"><span>a cherry 🍒</span> ➔ <span class="text-pink-600">cherries</span></li>
+                            <li class="flex justify-between pb-1"><span>a candy 🍬</span> ➔ <span class="text-pink-600">candies</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Rule 5: Others -->
+                    <div class="bg-orange-50 rounded-2xl p-6 border-2 border-orange-200 shadow-sm md:col-span-2 lg:col-span-1">
+                        <h3 class="text-2xl font-bold text-orange-700 mb-4 flex items-center justify-between">
+                            The "Others" <span class="bg-orange-200 text-orange-800 px-2 py-1 rounded text-sm">Irregular</span>
+                        </h3>
+                        <p class="text-gray-600 mb-4 text-sm font-semibold">Spelling changes or no change at all.</p>
+                        <ul class="space-y-2 text-lg font-medium">
+                            <li class="flex justify-between border-b border-orange-100 pb-1"><span>a woman 👩</span> ➔ <span class="text-orange-600">women</span></li>
+                            <li class="flex justify-between border-b border-orange-100 pb-1"><span>a tooth 🦷</span> ➔ <span class="text-orange-600">teeth</span></li>
+                            <li class="flex justify-between pb-1"><span>a fish 🐟</span> ➔ <span class="text-orange-600">fish</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-2 border-dashed border-gray-200">
+
+            <section id="practice-1">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-indigo-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-2xl shadow-md">2</div>
+                    <h2 class="text-3xl font-bold text-gray-700">Match the Pairs 🧩</h2>
+                </div>
+                <p class="text-gray-600 mb-6 font-medium text-lg">Drag the singular noun and drop it next to its correct plural match.</p>
+
+                <div class="flex flex-col md:flex-row gap-8 bg-indigo-50 p-6 rounded-2xl border border-indigo-100">
+                    <!-- Draggable Items (Singular) -->
+                    <div id="p1-word-bank" class="flex-1 drop-zone flex flex-col gap-3 min-h-[250px] p-4 bg-white rounded-xl border-2 border-dashed border-indigo-200" ondrop="drop(event, 'match-bank')" ondragover="allowDrop(event)">
+                        <div id="p1-item-1" class="draggable bg-white border-2 border-indigo-200 text-indigo-700 font-bold py-3 px-4 rounded-xl shadow-sm text-center" draggable="true" ondragstart="drag(event)" data-match="birds">a bird</div>
+                        <div id="p1-item-2" class="draggable bg-white border-2 border-indigo-200 text-indigo-700 font-bold py-3 px-4 rounded-xl shadow-sm text-center" draggable="true" ondragstart="drag(event)" data-match="beaches">a beach</div>
+                        <div id="p1-item-3" class="draggable bg-white border-2 border-indigo-200 text-indigo-700 font-bold py-3 px-4 rounded-xl shadow-sm text-center" draggable="true" ondragstart="drag(event)" data-match="halves">a half</div>
+                        <div id="p1-item-4" class="draggable bg-white border-2 border-indigo-200 text-indigo-700 font-bold py-3 px-4 rounded-xl shadow-sm text-center" draggable="true" ondragstart="drag(event)" data-match="puppies">a puppy</div>
+                        <div id="p1-item-5" class="draggable bg-white border-2 border-indigo-200 text-indigo-700 font-bold py-3 px-4 rounded-xl shadow-sm text-center" draggable="true" ondragstart="drag(event)" data-match="geese">a goose</div>
+                    </div>
+
+                    <!-- Drop Targets (Plural) -->
+                    <div class="flex-1 flex flex-col gap-3">
+                        <div class="flex items-center gap-4 bg-white p-2 rounded-xl shadow-sm border border-gray-100">
+                            <div class="w-1/2 drop-zone p1-target bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg h-12 flex items-center justify-center" data-target="puppies" ondrop="dropMatch(event)" ondragover="allowDrop(event)"></div>
+                            <div class="w-1/2 text-center font-bold text-xl text-gray-700">➔ puppies</div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white p-2 rounded-xl shadow-sm border border-gray-100">
+                            <div class="w-1/2 drop-zone p1-target bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg h-12 flex items-center justify-center" data-target="beaches" ondrop="dropMatch(event)" ondragover="allowDrop(event)"></div>
+                            <div class="w-1/2 text-center font-bold text-xl text-gray-700">➔ beaches</div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white p-2 rounded-xl shadow-sm border border-gray-100">
+                            <div class="w-1/2 drop-zone p1-target bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg h-12 flex items-center justify-center" data-target="birds" ondrop="dropMatch(event)" ondragover="allowDrop(event)"></div>
+                            <div class="w-1/2 text-center font-bold text-xl text-gray-700">➔ birds</div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white p-2 rounded-xl shadow-sm border border-gray-100">
+                            <div class="w-1/2 drop-zone p1-target bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg h-12 flex items-center justify-center" data-target="geese" ondrop="dropMatch(event)" ondragover="allowDrop(event)"></div>
+                            <div class="w-1/2 text-center font-bold text-xl text-gray-700">➔ geese</div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white p-2 rounded-xl shadow-sm border border-gray-100">
+                            <div class="w-1/2 drop-zone p1-target bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg h-12 flex items-center justify-center" data-target="halves" ondrop="dropMatch(event)" ondragover="allowDrop(event)"></div>
+                            <div class="w-1/2 text-center font-bold text-xl text-gray-700">➔ halves</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-2 border-dashed border-gray-200">
+
+            <section id="practice-2">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-teal-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-2xl shadow-md">3</div>
+                    <h2 class="text-3xl font-bold text-gray-700">Sort the Plurals 🗂️</h2>
+                </div>
+                <p class="text-gray-600 mb-6 font-medium text-lg">Sort the plural nouns into the box that matches their spelling rule.</p>
+
+                <!-- Word Bank -->
+                <div id="p2-word-bank" class="drop-zone p2-zone bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-6 mb-8 flex flex-wrap gap-4 items-center justify-center min-h-[120px]" ondrop="dropSort(event)" ondragover="allowDrop(event)">
+                    <div id="p2-item-1" class="draggable bg-white border border-slate-200 shadow hover:shadow-md rounded-lg px-6 py-3 font-bold text-teal-700 text-lg" draggable="true" ondragstart="drag(event)" data-rule="s">shoes</div>
+                    <div id="p2-item-2" class="draggable bg-white border border-slate-200 shadow hover:shadow-md rounded-lg px-6 py-3 font-bold text-teal-700 text-lg" draggable="true" ondragstart="drag(event)" data-rule="es">peaches</div>
+                    <div id="p2-item-3" class="draggable bg-white border border-slate-200 shadow hover:shadow-md rounded-lg px-6 py-3 font-bold text-teal-700 text-lg" draggable="true" ondragstart="drag(event)" data-rule="ves">wolves</div>
+                    <div id="p2-item-4" class="draggable bg-white border border-slate-200 shadow hover:shadow-md rounded-lg px-6 py-3 font-bold text-teal-700 text-lg" draggable="true" ondragstart="drag(event)" data-rule="ies">cherries</div>
+                    <div id="p2-item-5" class="draggable bg-white border border-slate-200 shadow hover:shadow-md rounded-lg px-6 py-3 font-bold text-teal-700 text-lg" draggable="true" ondragstart="drag(event)" data-rule="irregular">teeth</div>
+                </div>
+
+                <!-- Sorting Categories -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-blue-50 border-2 border-blue-200 rounded-xl flex flex-col overflow-hidden">
+                        <div class="bg-blue-200 py-2 text-center font-bold text-blue-800">Rule: +s</div>
+                        <div class="drop-zone p2-zone flex-1 p-4 flex flex-col gap-2" data-rule="s" ondrop="dropSort(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                    <div class="bg-green-50 border-2 border-green-200 rounded-xl flex flex-col overflow-hidden">
+                        <div class="bg-green-200 py-2 text-center font-bold text-green-800">Rule: +es</div>
+                        <div class="drop-zone p2-zone flex-1 p-4 flex flex-col gap-2" data-rule="es" ondrop="dropSort(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                    <div class="bg-purple-50 border-2 border-purple-200 rounded-xl flex flex-col overflow-hidden">
+                        <div class="bg-purple-200 py-2 text-center font-bold text-purple-800">Rule: +ves</div>
+                        <div class="drop-zone p2-zone flex-1 p-4 flex flex-col gap-2" data-rule="ves" ondrop="dropSort(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                    <div class="bg-pink-50 border-2 border-pink-200 rounded-xl flex flex-col overflow-hidden">
+                        <div class="bg-pink-200 py-2 text-center font-bold text-pink-800">Rule: +ies</div>
+                        <div class="drop-zone p2-zone flex-1 p-4 flex flex-col gap-2" data-rule="ies" ondrop="dropSort(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                    <div class="bg-orange-50 border-2 border-orange-200 rounded-xl flex flex-col overflow-hidden col-span-2 md:col-span-1">
+                        <div class="bg-orange-200 py-2 text-center font-bold text-orange-800">Irregular</div>
+                        <div class="drop-zone p2-zone flex-1 p-4 flex flex-col gap-2" data-rule="irregular" ondrop="dropSort(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-2 border-dashed border-gray-200">
+
+            <section id="practice-3">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-rose-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-2xl shadow-md">4</div>
+                    <h2 class="text-3xl font-bold text-gray-700">Write It! ✍️</h2>
+                </div>
+                <p class="text-gray-600 mb-6 font-medium text-lg">Type the correct plural form for each noun.</p>
+
+                <div class="bg-rose-50 p-6 md:p-8 rounded-2xl border border-rose-100 shadow-inner grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="flex items-center gap-4 text-xl bg-white p-3 rounded-lg shadow-sm">
+                        <span class="w-1/2 font-medium">a family ➔</span>
+                        <input type="text" class="write-input w-1/2 bg-gray-50 border-2 border-gray-300 rounded-md py-2 px-3 text-rose-700 font-bold focus:outline-none focus:border-rose-400" data-answer="families" placeholder="type here...">
+                    </div>
+                    
+                    <div class="flex items-center gap-4 text-xl bg-white p-3 rounded-lg shadow-sm">
+                        <span class="w-1/2 font-medium">a deer ➔</span>
+                        <input type="text" class="write-input w-1/2 bg-gray-50 border-2 border-gray-300 rounded-md py-2 px-3 text-rose-700 font-bold focus:outline-none focus:border-rose-400" data-answer="deer" placeholder="type here...">
+                    </div>
+
+                    <div class="flex items-center gap-4 text-xl bg-white p-3 rounded-lg shadow-sm">
+                        <span class="w-1/2 font-medium">a church ➔</span>
+                        <input type="text" class="write-input w-1/2 bg-gray-50 border-2 border-gray-300 rounded-md py-2 px-3 text-rose-700 font-bold focus:outline-none focus:border-rose-400" data-answer="churches" placeholder="type here...">
+                    </div>
+
+                    <div class="flex items-center gap-4 text-xl bg-white p-3 rounded-lg shadow-sm">
+                        <span class="w-1/2 font-medium">a dictionary ➔</span>
+                        <input type="text" class="write-input w-1/2 bg-gray-50 border-2 border-gray-300 rounded-md py-2 px-3 text-rose-700 font-bold focus:outline-none focus:border-rose-400" data-answer="dictionaries" placeholder="type here...">
+                    </div>
+
+                    <div class="flex items-center gap-4 text-xl bg-white p-3 rounded-lg shadow-sm">
+                        <span class="w-1/2 font-medium">a life ➔</span>
+                        <input type="text" class="write-input w-1/2 bg-gray-50 border-2 border-gray-300 rounded-md py-2 px-3 text-rose-700 font-bold focus:outline-none focus:border-rose-400" data-answer="lives" placeholder="type here...">
+                    </div>
+
+                    <div class="flex items-center gap-4 text-xl bg-white p-3 rounded-lg shadow-sm">
+                        <span class="w-1/2 font-medium">a policeman ➔</span>
+                        <input type="text" class="write-input w-1/2 bg-gray-50 border-2 border-gray-300 rounded-md py-2 px-3 text-rose-700 font-bold focus:outline-none focus:border-rose-400" data-answer="policemen" placeholder="type here...">
+                    </div>
+                </div>
+            </section>
+
+            <div class="text-center pt-8">
+                <button id="check-btn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-extrabold py-4 px-12 rounded-full shadow-lg transition-all transform hover:-translate-y-1 hover:shadow-xl text-2xl w-full md:w-auto focus:outline-none">
+                    Check Answers ✨
+                </button>
+            </div>
+
+            <div id="results" class="hidden bg-slate-800 text-white rounded-3xl p-8 text-center shadow-2xl transform scale-95 transition-all">
+                <h2 id="result-title" class="text-4xl font-extrabold mb-4 text-yellow-400">Score</h2>
+                <p id="score-text" class="text-3xl font-bold mb-6">0 / 0</p>
+                <p class="text-lg text-slate-300 mb-6">Review your answers above. Green is correct, Red is incorrect.</p>
+                <button id="retry-btn" class="bg-white text-slate-800 font-bold py-3 px-8 rounded-full hover:bg-slate-200 transition-colors">
+                    Try Again ↺
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- Drag and Drop Core Variables & Functions ---
+        
+        function allowDrop(ev) {
+            ev.preventDefault();
+            if(ev.target.classList.contains('drop-zone')) {
+                ev.target.classList.add('drag-over');
+            }
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+            setTimeout(() => {
+                ev.target.classList.add('dragging');
+            }, 0);
+        }
+
+        // Clean up visual drag-over states
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.addEventListener('dragleave', (e) => {
+                zone.classList.remove('drag-over');
+            });
+        });
+
+        // Drop logic for Practice 1 (Matching: 1 item per zone limit)
+        function dropMatch(ev) {
+            ev.preventDefault();
+            ev.target.classList.remove('drag-over');
+            const data = ev.dataTransfer.getData("text");
+            const draggedEl = document.getElementById(data);
+            const dropTarget = ev.target.closest('.drop-zone');
+
+            // If it's a target zone and already has a child, don't allow drop (swap back to bank)
+            if (dropTarget.classList.contains('p1-target') && dropTarget.children.length > 0) {
+                return; 
+            }
+
+            if (dropTarget && draggedEl) {
+                // Ensure we are dropping in a P1 zone, not crossing over to P2
+                if(dropTarget.classList.contains('p1-target') || dropTarget.id === 'p1-word-bank') {
+                    dropTarget.appendChild(draggedEl);
+                    draggedEl.style.width = '100%'; // fit the container
+                    draggedEl.style.margin = '0';
+                }
+            }
+            draggedEl.classList.remove('dragging');
+        }
+
+        // Generic drop for bank
+        function drop(ev, bankId) {
+             ev.preventDefault();
+             ev.target.classList.remove('drag-over');
+             const data = ev.dataTransfer.getData("text");
+             const draggedEl = document.getElementById(data);
+             const dropTarget = ev.target.closest('.drop-zone');
+             
+             if (dropTarget && draggedEl) {
+                dropTarget.appendChild(draggedEl);
+                draggedEl.style.width = 'auto'; // reset width
+             }
+             draggedEl.classList.remove('dragging');
+        }
+
+        // Drop logic for Practice 2 (Sorting: Multiple items per zone)
+        function dropSort(ev) {
+            ev.preventDefault();
+            ev.target.classList.remove('drag-over');
+            const data = ev.dataTransfer.getData("text");
+            const draggedEl = document.getElementById(data);
+            const dropTarget = ev.target.closest('.drop-zone');
+
+            if (dropTarget && draggedEl) {
+                // Ensure dropping in P2 zones
+                if(dropTarget.classList.contains('p2-zone')) {
+                    dropTarget.appendChild(draggedEl);
+                    draggedEl.style.width = '100%';
+                }
+            }
+            draggedEl.classList.remove('dragging');
+        }
+
+
+        // --- Validation & Grading System ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkBtn = document.getElementById('check-btn');
+            const retryBtn = document.getElementById('retry-btn');
+            const resultsContainer = document.getElementById('results');
+            const scoreText = document.getElementById('score-text');
+            const resultTitle = document.getElementById('result-title');
+
+            const p1Targets = document.querySelectorAll('.p1-target');
+            const p2Items = document.querySelectorAll('#practice-2 .draggable');
+            const writeInputs = document.querySelectorAll('.write-input');
+
+            // Total points = 5 (Match) + 5 (Sort) + 6 (Write) = 16
+            const totalPoints = 16;
+
+            checkBtn.addEventListener('click', () => {
+                let score = 0;
+
+                // 1. Check Practice 1 (Matching)
+                p1Targets.forEach(target => {
+                    const expectedMatch = target.dataset.target;
+                    const child = target.firstElementChild;
+                    
+                    if (child) {
+                        const actualMatch = child.dataset.match;
+                        if (actualMatch === expectedMatch) {
+                            child.classList.add('correct-bg');
+                            score++;
+                        } else {
+                            child.classList.add('incorrect-bg');
+                        }
+                        child.setAttribute('draggable', 'false'); // disable dragging
+                    }
+                });
+
+                // Also disable draggables left in the bank
+                document.querySelectorAll('#p1-word-bank .draggable').forEach(el => {
+                    el.classList.add('incorrect-bg');
+                    el.setAttribute('draggable', 'false');
+                });
+
+                // 2. Check Practice 2 (Sorting)
+                p2Items.forEach(item => {
+                    const itemRule = item.dataset.rule;
+                    const currentContainer = item.parentElement;
+                    const containerRule = currentContainer.dataset.rule;
+
+                    if (currentContainer.id === 'p2-word-bank') {
+                        item.classList.add('incorrect-bg');
+                    } else if (itemRule === containerRule) {
+                        item.classList.add('correct-bg');
+                        score++;
+                    } else {
+                        item.classList.add('incorrect-bg');
+                    }
+                    item.setAttribute('draggable', 'false');
+                });
+
+                // 3. Check Practice 3 (Writing)
+                writeInputs.forEach(input => {
+                    input.classList.remove('correct-input', 'incorrect-input');
+                    const userAnswer = input.value.trim().toLowerCase();
+                    const correctAnswer = input.dataset.answer.toLowerCase();
+
+                    if (userAnswer === correctAnswer) {
+                        input.classList.add('correct-input');
+                        score++;
+                    } else {
+                        input.classList.add('incorrect-input');
+                    }
+                    input.disabled = true; // disable input
+                });
+
+                // Display Results
+                scoreText.textContent = `${score} / ${totalPoints} Points`;
+                if (score === totalPoints) {
+                    resultTitle.textContent = "Perfect Score! 🏆🌟";
+                } else if (score >= totalPoints - 4) {
+                    resultTitle.textContent = "Great Job! ⭐";
+                } else {
+                    resultTitle.textContent = "Keep Practicing! 💪";
+                }
+
+                resultsContainer.classList.remove('hidden');
+                resultsContainer.classList.remove('scale-95');
+                resultsContainer.classList.add('scale-100');
+                checkBtn.classList.add('hidden');
+
+                resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+
+            // Retry Logic (Reset everything)
+            retryBtn.addEventListener('click', () => {
+                // Reset P1
+                const p1Bank = document.getElementById('p1-word-bank');
+                document.querySelectorAll('#practice-1 .draggable').forEach(el => {
+                    el.classList.remove('correct-bg', 'incorrect-bg');
+                    el.setAttribute('draggable', 'true');
+                    el.style.width = 'auto';
+                    p1Bank.appendChild(el);
+                });
+
+                // Reset P2
+                const p2Bank = document.getElementById('p2-word-bank');
+                p2Items.forEach(el => {
+                    el.classList.remove('correct-bg', 'incorrect-bg');
+                    el.setAttribute('draggable', 'true');
+                    el.style.width = 'auto';
+                    p2Bank.appendChild(el);
+                });
+
+                // Reset P3
+                writeInputs.forEach(input => {
+                    input.value = "";
+                    input.classList.remove('correct-input', 'incorrect-input');
+                    input.disabled = false;
+                });
+
+                resultsContainer.classList.add('hidden');
+                resultsContainer.classList.add('scale-95');
+                resultsContainer.classList.remove('scale-100');
+                checkBtn.classList.remove('hidden');
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
