@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Plural Nouns Adventure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0fdf4;
+            background-image: radial-gradient(#bbf7d0 2px, transparent 2px);
+            background-size: 30px 30px;
+            touch-action: manipulation;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .fredoka {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .btn-bounce {
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-bounce:hover { transform: scale(1.05) translateY(-2px); }
+        .btn-bounce:active { transform: scale(0.95); }
+
+        /* Game 1 Specific Styles */
+        #g1-game-area {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #e0f2fe 0%, #bfdbfe 100%);
+            touch-action: none; /* Prevent scroll while dragging */
+        }
+        .falling-item {
+            position: absolute;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+            z-index: 50;
+            will-change: top, left;
+        }
+        .falling-item:active { cursor: grabbing; }
+        .bucket-hover {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Standard Drag & Drop for Game 3 */
+        .g3-word[draggable=true] { cursor: grab; }
+        .g3-word.dragging { opacity: 0.5; transform: scale(1.05); }
+
+        /* Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+        .error-shake { animation: shake 0.4s; background-color: #fee2e2 !important; border-color: #ef4444 !important; }
+        .success-flash { background-color: #dcfce7 !important; border-color: #22c55e !important; }
+        
+        .feedback-pop { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-2 sm:p-4">
+
+    <div class="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-white relative flex flex-col h-[90vh] max-h-[900px]">
+        
+        <header class="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 p-4 text-center relative shadow-md z-20 flex justify-between items-center shrink-0">
+            <button id="back-btn" class="hidden bg-white/20 hover:bg-white/30 text-white p-2 rounded-lg font-bold transition-colors flex items-center gap-2" onclick="showMenu()">
+                <span>◀</span> <span class="hidden sm:inline">Back to Menu</span>
+            </button>
+            <h1 class="text-2xl sm:text-4xl font-bold text-white tracking-wide drop-shadow-md mx-auto fredoka">
+                ✨ Plural Nouns Adventure ✨
+            </h1>
+            <div class="w-10 sm:w-32"></div>
+        </header>
+
+        <div class="flex-1 relative overflow-y-auto overflow-x-hidden">
+            <div id="menu-screen" class="absolute inset-0 p-8 sm:p-12 flex flex-col justify-center bg-slate-50">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2 fredoka">Choose a Game!</h2>
+                    <p class="text-slate-500 text-lg">Practice your singular and plural noun rules.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto w-full">
+                    <button onclick="startGame(1)" class="btn-bounce bg-blue-50 border-4 border-blue-200 rounded-3xl p-8 text-center shadow-md hover:shadow-xl hover:border-blue-400 group relative overflow-hidden">
+                        <div class="absolute inset-0 bg-blue-100 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        <div class="relative z-10">
+                            <div class="text-6xl mb-4 group-hover:-translate-y-2 transition-transform duration-300">🧺</div>
+                            <h3 class="text-2xl font-bold text-blue-800 mb-2 fredoka">Catch the Nouns</h3>
+                            <p class="text-blue-600 font-medium">Catch falling emojis and drag them into the rule buckets!</p>
+                        </div>
+                    </button>
+
+                    <button onclick="startGame(2)" class="btn-bounce bg-emerald-50 border-4 border-emerald-200 rounded-3xl p-8 text-center shadow-md hover:shadow-xl hover:border-emerald-400 group relative overflow-hidden">
+                        <div class="absolute inset-0 bg-emerald-100 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        <div class="relative z-10">
+                            <div class="text-6xl mb-4 group-hover:-translate-y-2 transition-transform duration-300">✍️</div>
+                            <h3 class="text-2xl font-bold text-emerald-800 mb-2 fredoka">Write the Plural</h3>
+                            <p class="text-emerald-600 font-medium">Look at the emoji and type the correct plural word!</p>
+                        </div>
+                    </button>
+
+                    <button onclick="startGame(3)" class="btn-bounce bg-amber-50 border-4 border-amber-200 rounded-3xl p-8 text-center shadow-md hover:shadow-xl hover:border-amber-400 group relative overflow-hidden">
+                        <div class="absolute inset-0 bg-amber-100 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        <div class="relative z-10">
+                            <div class="text-6xl mb-4 group-hover:-translate-y-2 transition-transform duration-300">🧩</div>
+                            <h3 class="text-2xl font-bold text-amber-800 mb-2 fredoka">Match 'Em Up</h3>
+                            <p class="text-amber-600 font-medium">Drag the plural word blocks to the matching emoji!</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <div id="game1-screen" class="absolute inset-0 hidden flex flex-col">
+                <div class="bg-white p-3 text-center shrink-0 border-b-2 border-blue-100 flex justify-between items-center px-6">
+                    <div class="text-xl font-bold text-blue-800">Score: <span id="g1-score" class="text-blue-600 text-2xl">0</span></div>
+                    <div id="g1-status" class="text-lg font-bold text-gray-500">Catch the nouns!</div>
+                    <div class="text-xl font-bold text-rose-500">Lives: <span id="g1-lives">❤️❤️❤️</span></div>
+                </div>
+
+                <!-- Game Area (Falling Items) -->
+                <div id="g1-game-area" class="flex-1 relative cursor-crosshair border-b-4 border-blue-300 shadow-inner">
+                    <!-- Dynamic falling elements go here -->
+                </div>
+
+                <!-- Buckets Zone -->
+                <div class="bg-slate-100 p-2 sm:p-4 shrink-0 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1)] z-10">
+                    <div class="grid grid-cols-5 gap-2 h-28 sm:h-32" id="bucket-container">
+                        <div class="bucket rounded-xl sm:rounded-2xl flex flex-col items-center justify-end pb-2 border-4 border-pink-400 bg-pink-100 shadow-md relative transition-transform" data-rule="s">
+                            <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiMwMDAiLz48L3N2Zz4=')]"></div>
+                            <span class="text-lg sm:text-2xl font-extrabold text-pink-700 z-10 mb-1">+ s</span>
+                        </div>
+                        <div class="bucket rounded-xl sm:rounded-2xl flex flex-col items-center justify-end pb-2 border-4 border-purple-400 bg-purple-100 shadow-md relative transition-transform" data-rule="es">
+                            <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiMwMDAiLz48L3N2Zz4=')]"></div>
+                            <span class="text-lg sm:text-2xl font-extrabold text-purple-700 z-10 mb-1">+ es</span>
+                        </div>
+                        <div class="bucket rounded-xl sm:rounded-2xl flex flex-col items-center justify-end pb-2 border-4 border-indigo-400 bg-indigo-100 shadow-md relative transition-transform" data-rule="ves">
+                            <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiMwMDAiLz48L3N2Zz4=')]"></div>
+                            <span class="text-sm sm:text-xl font-extrabold text-indigo-700 z-10 text-center leading-tight">f/fe ➔<br>ves</span>
+                        </div>
+                        <div class="bucket rounded-xl sm:rounded-2xl flex flex-col items-center justify-end pb-2 border-4 border-teal-400 bg-teal-100 shadow-md relative transition-transform" data-rule="ies">
+                            <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiMwMDAiLz48L3N2Zz4=')]"></div>
+                            <span class="text-sm sm:text-xl font-extrabold text-teal-700 z-10 text-center leading-tight">y ➔<br>ies</span>
+                        </div>
+                        <div class="bucket rounded-xl sm:rounded-2xl flex flex-col items-center justify-end pb-2 border-4 border-amber-400 bg-amber-100 shadow-md relative transition-transform" data-rule="others">
+                            <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiMwMDAiLz48L3N2Zz4=')]"></div>
+                            <span class="text-sm sm:text-xl font-extrabold text-amber-700 z-10 text-center leading-tight">Others<br>(Irreg)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game 1 Overlay -->
+                <div id="g1-overlay" class="absolute inset-0 bg-slate-900/80 z-50 flex items-center justify-center hidden">
+                    <div class="bg-white p-8 rounded-3xl text-center shadow-2xl border-4 border-blue-400 feedback-pop">
+                        <h2 id="g1-overlay-title" class="text-4xl font-bold text-blue-700 mb-4 fredoka">Game Over!</h2>
+                        <p class="text-xl text-gray-600 mb-6">Final Score: <span id="g1-final-score" class="font-bold text-2xl text-blue-600">0</span></p>
+                        <button onclick="initGame1()" class="btn-bounce bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-xl text-xl">Play Again</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game2-screen" class="absolute inset-0 hidden p-8 sm:p-12 flex flex-col items-center justify-center bg-emerald-50/50">
+                <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-emerald-100 p-8 text-center relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+                    
+                    <h2 class="text-2xl font-bold text-slate-700 mb-6 fredoka">Type the Plural Form</h2>
+                    
+                    <div class="bg-slate-50 rounded-2xl p-6 mb-6 inline-block border-4 border-slate-200 w-full relative">
+                        <div id="g2-emoji" class="text-7xl mb-2 drop-shadow-sm">🍎</div>
+                        <div class="text-slate-400 font-bold uppercase tracking-wider text-sm mb-1">Singular</div>
+                        <div id="g2-singular" class="text-3xl font-extrabold text-slate-800 tracking-wide fredoka">apple</div>
+                    </div>
+
+                    <div class="mb-6 relative">
+                        <input type="text" id="g2-input" placeholder="Type plural..." class="w-full text-center text-3xl font-bold text-emerald-700 border-4 border-slate-200 rounded-xl py-4 px-4 focus:outline-none focus:border-emerald-400 transition-colors bg-white shadow-inner" autocomplete="off" autocorrect="off" spellcheck="false">
+                        <div id="g2-inline-feedback" class="absolute -right-4 -top-6 text-6xl hidden drop-shadow-lg pointer-events-none z-10">⭐</div>
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <button id="g2-submit-btn" onclick="checkWriteAnswer()" class="btn-bounce w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl text-xl shadow-lg border-b-4 border-emerald-700">Check Answer</button>
+                        <button id="g2-next-btn" onclick="nextWriteWord()" class="hidden btn-bounce w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 rounded-xl text-xl shadow-lg border-b-4 border-blue-700">Next Word ➔</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game3-screen" class="absolute inset-0 hidden p-6 sm:p-10 flex flex-col bg-amber-50/50">
+                <div class="text-center mb-6 flex justify-between items-center bg-white p-4 rounded-2xl shadow-md border-2 border-amber-100 shrink-0">
+                    <div>
+                        <h2 class="text-2xl font-bold text-amber-900 fredoka">Match 'Em Up!</h2>
+                        <p class="text-amber-700 font-medium text-sm sm:text-base">Drag the plural word to the correct emoji.</p>
+                    </div>
+                    <button onclick="initGame3()" class="btn-bounce bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold py-2 px-4 rounded-lg shadow-sm transition-colors border border-amber-300">Shuffle 🔀</button>
+                </div>
+
+                <div class="flex-1 flex gap-4 md:gap-10 overflow-y-auto pb-4">
+                    <!-- Emojis (Drop Zones) -->
+                    <div id="g3-emojis" class="flex-1 flex flex-col gap-4">
+                        <!-- JS Generated -->
+                    </div>
+                    <!-- Plural Words (Draggables) -->
+                    <div id="g3-words" class="flex-1 flex flex-col gap-4">
+                        <!-- JS Generated -->
+                    </div>
+                </div>
+                
+                <div id="g3-win-overlay" class="hidden absolute inset-0 bg-slate-900/80 z-50 flex items-center justify-center">
+                    <div class="bg-white p-10 rounded-3xl shadow-2xl border-4 border-amber-400 text-center feedback-pop max-w-sm w-full mx-4">
+                        <div class="text-7xl mb-4">🏆</div>
+                        <h3 class="text-3xl font-bold text-amber-700 mb-2 fredoka">Awesome Job!</h3>
+                        <p class="text-slate-600 font-medium mb-6 text-lg">You matched all the plurals perfectly.</p>
+                        <button onclick="initGame3()" class="btn-bounce w-full bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white font-bold py-4 rounded-xl text-xl shadow-lg">Play Again!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const wordData = [
+            // The "~s" Rule
+            { rule: 's', singular: 'pen', plural: 'pens', emoji: '🖊️' },
+            { rule: 's', singular: 'desk', plural: 'desks', emoji: '🪑' }, // Using chair emoji for desk as fallback
+            { rule: 's', singular: 'chair', plural: 'chairs', emoji: '🪑' },
+            { rule: 's', singular: 'car', plural: 'cars', emoji: '🚗' },
+            { rule: 's', singular: 'tree', plural: 'trees', emoji: '🌳' },
+            { rule: 's', singular: 'bird', plural: 'birds', emoji: '🐦' },
+            { rule: 's', singular: 'shoe', plural: 'shoes', emoji: '👞' },
+            { rule: 's', singular: 'shirt', plural: 'shirts', emoji: '👕' },
+            { rule: 's', singular: 'cup', plural: 'cups', emoji: '☕' },
+            { rule: 's', singular: 'bag', plural: 'bags', emoji: '👜' },
+            
+            // The "~es" Rule
+            { rule: 'es', singular: 'class', plural: 'classes', emoji: '🏫' },
+            { rule: 'es', singular: 'glass', plural: 'glasses', emoji: '🥃' },
+            { rule: 'es', singular: 'dress', plural: 'dresses', emoji: '👗' },
+            { rule: 'es', singular: 'brush', plural: 'brushes', emoji: '🖌️' },
+            { rule: 'es', singular: 'bench', plural: 'benches', emoji: '🪑' },
+            { rule: 'es', singular: 'peach', plural: 'peaches', emoji: '🍑' },
+            { rule: 'es', singular: 'beach', plural: 'beaches', emoji: '🏖️' },
+            { rule: 'es', singular: 'church', plural: 'churches', emoji: '⛪' },
+            { rule: 'es', singular: 'fox', plural: 'foxes', emoji: '🦊' },
+            { rule: 'es', singular: 'match', plural: 'matches', emoji: '🔥' },
+
+            // The "~ves" Rule
+            { rule: 'ves', singular: 'thief', plural: 'thieves', emoji: '🦹' },
+            { rule: 'ves', singular: 'wife', plural: 'wives', emoji: '👰' },
+            { rule: 'ves', singular: 'life', plural: 'lives', emoji: '❤️' },
+            { rule: 'ves', singular: 'half', plural: 'halves', emoji: '🌗' },
+            { rule: 'ves', singular: 'loaf', plural: 'loaves', emoji: '🍞' },
+            { rule: 'ves', singular: 'calf', plural: 'calves', emoji: '🐄' },
+            { rule: 'ves', singular: 'elf', plural: 'elves', emoji: '🧝' },
+            { rule: 'ves', singular: 'scarf', plural: 'scarves', emoji: '🧣' },
+            { rule: 'ves', singular: 'shelf', plural: 'shelves', emoji: '📚' },
+            { rule: 'ves', singular: 'wolf', plural: 'wolves', emoji: '🐺' },
+
+            // The "~ies" Rule
+            { rule: 'ies', singular: 'party', plural: 'parties', emoji: '🎉' },
+            { rule: 'ies', singular: 'story', plural: 'stories', emoji: '📖' },
+            { rule: 'ies', singular: 'family', plural: 'families', emoji: '👨‍👩‍👧‍👦' },
+            { rule: 'ies', singular: 'country', plural: 'countries', emoji: '🇹🇼' },
+            { rule: 'ies', singular: 'cherry', plural: 'cherries', emoji: '🍒' },
+            { rule: 'ies', singular: 'strawberry', plural: 'strawberries', emoji: '🍓' },
+            { rule: 'ies', singular: 'puppy', plural: 'puppies', emoji: '🐶' },
+            { rule: 'ies', singular: 'candy', plural: 'candies', emoji: '🍬' },
+            { rule: 'ies', singular: 'library', plural: 'libraries', emoji: '🏛️' },
+            { rule: 'ies', singular: 'dictionary', plural: 'dictionaries', emoji: '📘' },
+
+            // The "Others" Rule
+            { rule: 'others', singular: 'woman', plural: 'women', emoji: '👩' },
+            { rule: 'others', singular: 'tooth', plural: 'teeth', emoji: '🦷' },
+            { rule: 'others', singular: 'goose', plural: 'geese', emoji: '🦆' },
+            { rule: 'others', singular: 'person', plural: 'people', emoji: '🧍' },
+            { rule: 'others', singular: 'ox', plural: 'oxen', emoji: '🐂' },
+            { rule: 'others', singular: 'policeman', plural: 'policemen', emoji: '👮' },
+            { rule: 'others', singular: 'sheep', plural: 'sheep', emoji: '🐑' },
+            { rule: 'others', singular: 'deer', plural: 'deer', emoji: '🦌' },
+            { rule: 'others', singular: 'fish', plural: 'fish', emoji: '🐟' },
+            { rule: 'others', singular: 'fireman', plural: 'firemen', emoji: '👨‍🚒' }
+        ];
+
+        const screens = {
+            menu: document.getElementById('menu-screen'),
+            game1: document.getElementById('game1-screen'),
+            game2: document.getElementById('game2-screen'),
+            game3: document.getElementById('game3-screen')
+        };
+        const backBtn = document.getElementById('back-btn');
+
+        function hideAllScreens() {
+            Object.values(screens).forEach(screen => screen.classList.add('hidden'));
+            if(game1LoopId) cancelAnimationFrame(game1LoopId);
+        }
+
+        function showMenu() {
+            hideAllScreens();
+            screens.menu.classList.remove('hidden');
+            backBtn.classList.add('hidden');
+        }
+
+        function startGame(id) {
+            hideAllScreens();
+            backBtn.classList.remove('hidden');
+            screens[`game${id}`].classList.remove('hidden');
+            
+            if (id === 1) initGame1();
+            if (id === 2) initGame2();
+            if (id === 3) initGame3();
+        }
+
+        function getRandomWord() {
+            return wordData[Math.floor(Math.random() * wordData.length)];
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Game 1 Variables
+        let g1Score = 0;
+        let g1Lives = 3;
+        let g1CurrentWord = null;
+        let activeItemEl = null;
+        let game1LoopId = null;
+        
+        let itemY = 0;
+        let itemX = 0;
+        let fallSpeed = 1.5;
+        let isDragging = false;
+        
+        // Pointer offset for smooth dragging
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+
+        const gameArea = document.getElementById('g1-game-area');
+        const scoreDisplay = document.getElementById('g1-score');
+        const livesDisplay = document.getElementById('g1-lives');
+        const statusDisplay = document.getElementById('g1-status');
+        const buckets = document.querySelectorAll('.bucket');
+
+        function initGame1() {
+            g1Score = 0;
+            g1Lives = 3;
+            fallSpeed = 1.5;
+            scoreDisplay.innerText = g1Score;
+            updateLivesDisplay();
+            document.getElementById('g1-overlay').classList.add('hidden');
+            statusDisplay.innerText = "Catch the nouns!";
+            gameArea.innerHTML = ''; // clear area
+            
+            spawnFallingItem();
+            gameLoop();
+        }
+
+        function updateLivesDisplay() {
+            livesDisplay.innerText = '❤️'.repeat(g1Lives) + '🤍'.repeat(3 - g1Lives);
+        }
+
+        function spawnFallingItem() {
+            if (g1Lives <= 0) return;
+            
+            if (activeItemEl && activeItemEl.parentNode) {
+                activeItemEl.remove();
+            }
+
+            g1CurrentWord = getRandomWord();
+            activeItemEl = document.createElement('div');
+            activeItemEl.className = 'falling-item bg-white border-4 border-slate-700 rounded-3xl p-4 sm:p-6 flex flex-col items-center shadow-xl w-32 sm:w-40';
+            activeItemEl.innerHTML = `
+                <span class="text-5xl sm:text-6xl mb-2 drop-shadow-md pointer-events-none">${g1CurrentWord.emoji}</span>
+                <span class="text-xl sm:text-2xl font-bold text-slate-800 pointer-events-none fredoka">${g1CurrentWord.singular}</span>
+            `;
+
+            // Start position (random X within bounds)
+            const areaWidth = gameArea.clientWidth;
+            const itemWidth = 160; // Approx max width
+            itemX = Math.random() * (areaWidth - itemWidth);
+            itemY = -150; // Start slightly above
+            
+            activeItemEl.style.left = `${itemX}px`;
+            activeItemEl.style.top = `${itemY}px`;
+            
+            setupDragEvents(activeItemEl);
+            gameArea.appendChild(activeItemEl);
+            isDragging = false;
+        }
+
+        // Custom Drag & Drop for Game 1 to allow pausing fall
+        function setupDragEvents(el) {
+            const startDrag = (e) => {
+                isDragging = true;
+                el.style.transform = 'scale(1.1)';
+                el.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.2)';
+                
+                const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+                const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+                
+                const rect = el.getBoundingClientRect();
+                dragOffsetX = clientX - rect.left;
+                dragOffsetY = clientY - rect.top;
+            };
+
+            const moveDrag = (e) => {
+                if (!isDragging) return;
+                e.preventDefault(); // crucial for touch
+                
+                const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+                const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+                
+                const areaRect = gameArea.getBoundingClientRect();
+                
+                // Calculate new position relative to gameArea
+                itemX = clientX - areaRect.left - dragOffsetX;
+                itemY = clientY - areaRect.top - dragOffsetY;
+                
+                // Keep visually inside bounds (optional, but good UX)
+                itemX = Math.max(0, Math.min(itemX, areaRect.width - el.offsetWidth));
+                itemY = Math.max(0, Math.min(itemY, areaRect.height - el.offsetHeight + 100)); // Allow dragging slightly lower
+
+                el.style.left = `${itemX}px`;
+                el.style.top = `${itemY}px`;
+
+                checkBucketHover(clientX, clientY);
+            };
+
+            const endDrag = (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                el.style.transform = 'scale(1)';
+                el.style.boxShadow = '';
+
+                // Use changed client coords or fallback to last known if touch ended
+                const clientX = e.type.includes('mouse') ? e.clientX : (e.changedTouches ? e.changedTouches[0].clientX : 0);
+                const clientY = e.type.includes('mouse') ? e.clientY : (e.changedTouches ? e.changedTouches[0].clientY : 0);
+
+                processDrop(clientX, clientY);
+            };
+
+            el.addEventListener('mousedown', startDrag);
+            document.addEventListener('mousemove', moveDrag, {passive: false});
+            document.addEventListener('mouseup', endDrag);
+
+            el.addEventListener('touchstart', startDrag, {passive: false});
+            document.addEventListener('touchmove', moveDrag, {passive: false});
+            document.addEventListener('touchend', endDrag);
+            document.addEventListener('touchcancel', endDrag);
+        }
+
+        function checkBucketHover(mouseX, mouseY) {
+            buckets.forEach(bucket => bucket.classList.remove('bucket-hover'));
+            
+            for (let bucket of buckets) {
+                const rect = bucket.getBoundingClientRect();
+                // Adding a bit of padding to hit area
+                if (mouseX >= rect.left - 10 && mouseX <= rect.right + 10 &&
+                    mouseY >= rect.top - 20 && mouseY <= rect.bottom + 20) {
+                    bucket.classList.add('bucket-hover');
+                    break; 
+                }
+            }
+        }
+
+        function processDrop(mouseX, mouseY) {
+            let droppedBucket = null;
+            buckets.forEach(bucket => {
+                bucket.classList.remove('bucket-hover');
+                const rect = bucket.getBoundingClientRect();
+                if (mouseX >= rect.left - 10 && mouseX <= rect.right + 10 &&
+                    mouseY >= rect.top - 20 && mouseY <= rect.bottom + 20) {
+                    droppedBucket = bucket;
+                }
+            });
+
+            if (droppedBucket) {
+                const bucketRule = droppedBucket.dataset.rule;
+                if (bucketRule === g1CurrentWord.rule) {
+                    // Correct!
+                    g1Score += 10;
+                    scoreDisplay.innerText = g1Score;
+                    statusDisplay.innerText = "Correct! ✅";
+                    statusDisplay.className = "text-lg font-bold text-green-500 feedback-pop";
+                    
+                    if(g1Score % 30 === 0) fallSpeed += 0.5; // increase difficulty
+
+                    droppedBucket.classList.add('success-flash');
+                    setTimeout(() => droppedBucket.classList.remove('success-flash'), 500);
+                    spawnFallingItem();
+                } else {
+                    // Incorrect rule
+                    g1Lives--;
+                    updateLivesDisplay();
+                    statusDisplay.innerText = `Oops! ${g1CurrentWord.singular} ➔ ${g1CurrentWord.plural}`;
+                    statusDisplay.className = "text-lg font-bold text-red-500 feedback-pop";
+                    
+                    droppedBucket.classList.add('error-shake');
+                    setTimeout(() => droppedBucket.classList.remove('error-shake'), 500);
+                    
+                    if (g1Lives <= 0) endGame1();
+                    else spawnFallingItem();
+                }
+            }
+            // If dropped outside, it continues falling (isDragging is now false)
+        }
+
+        function gameLoop() {
+            if (g1Lives <= 0) return;
+
+            if (!isDragging && activeItemEl) {
+                itemY += fallSpeed;
+                activeItemEl.style.top = `${itemY}px`;
+                
+                const areaHeight = gameArea.clientHeight;
+                // If it falls past bottom
+                if (itemY > areaHeight) {
+                    g1Lives--;
+                    updateLivesDisplay();
+                    statusDisplay.innerText = `Missed! ${g1CurrentWord.singular} ➔ ${g1CurrentWord.plural}`;
+                    statusDisplay.className = "text-lg font-bold text-orange-500 feedback-pop";
+                    
+                    if (g1Lives <= 0) {
+                        endGame1();
+                    } else {
+                        spawnFallingItem();
+                    }
+                }
+            }
+            
+            game1LoopId = requestAnimationFrame(gameLoop);
+        }
+
+        function endGame1() {
+            if(activeItemEl) activeItemEl.remove();
+            document.getElementById('g1-final-score').innerText = g1Score;
+            document.getElementById('g1-overlay').classList.remove('hidden');
+        }
+
+        let g2CurrentWord;
+        const g2Input = document.getElementById('g2-input');
+        const g2BtnSubmit = document.getElementById('g2-submit-btn');
+        const g2BtnNext = document.getElementById('g2-next-btn');
+        const g2Feedback = document.getElementById('g2-inline-feedback');
+
+        function initGame2() {
+            g2Input.value = '';
+            g2Input.classList.remove('border-rose-400', 'border-green-400', 'bg-rose-50', 'bg-green-50', 'text-rose-700');
+            g2Input.classList.add('border-slate-200', 'bg-white');
+            g2BtnSubmit.classList.remove('hidden');
+            g2BtnNext.classList.add('hidden');
+            g2Feedback.classList.add('hidden');
+            
+            g2CurrentWord = getRandomWord();
+            document.getElementById('g2-emoji').innerText = g2CurrentWord.emoji;
+            document.getElementById('g2-singular').innerText = g2CurrentWord.singular;
+            g2Input.disabled = false;
+            g2Input.focus();
+        }
+
+        function nextWriteWord() { initGame2(); }
+
+        function checkWriteAnswer() {
+            const userAnswer = g2Input.value.trim().toLowerCase();
+            if (userAnswer === '') return;
+
+            g2Input.disabled = true;
+            g2BtnSubmit.classList.add('hidden');
+            g2BtnNext.classList.remove('hidden');
+            g2Feedback.classList.remove('hidden');
+
+            if (userAnswer === g2CurrentWord.plural.toLowerCase()) {
+                g2Input.classList.replace('border-slate-200', 'border-green-400');
+                g2Input.classList.replace('bg-white', 'bg-green-50');
+                g2Feedback.innerText = '✅';
+            } else {
+                g2Input.classList.replace('border-slate-200', 'border-rose-400');
+                g2Input.classList.replace('bg-white', 'bg-rose-50');
+                g2Input.classList.add('text-rose-700');
+                g2Input.value = `Correct: ${g2CurrentWord.plural}`;
+                g2Feedback.innerText = '❌';
+            }
+            
+            g2Feedback.classList.remove('feedback-pop');
+            void g2Feedback.offsetWidth; // trigger reflow
+            g2Feedback.classList.add('feedback-pop');
+            g2BtnNext.focus();
+        }
+
+        g2Input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !g2Input.disabled) checkWriteAnswer();
+        });
+
+        let g3MatchesFound = 0;
+        
+        function initGame3() {
+            g3MatchesFound = 0;
+            document.getElementById('g3-win-overlay').classList.add('hidden');
+            
+            const emojisContainer = document.getElementById('g3-emojis');
+            const wordsContainer = document.getElementById('g3-words');
+            emojisContainer.innerHTML = '';
+            wordsContainer.innerHTML = '';
+
+            // Pick 5 random unique words
+            let shuffledDict = shuffleArray([...wordData]);
+            let selectedItems = shuffledDict.slice(0, 5);
+            
+            let emojisList = shuffleArray([...selectedItems]);
+            let wordsList = shuffleArray([...selectedItems]);
+
+            // Create Emoji Drop Zones
+            emojisList.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'g3-dropzone bg-white border-4 border-dashed border-amber-300 rounded-2xl p-3 sm:p-4 text-center shadow-sm flex items-center justify-center transition-colors h-[80px] sm:h-[100px] relative overflow-hidden';
+                el.dataset.id = item.singular;
+                el.innerHTML = `<span class="text-4xl sm:text-5xl opacity-40 grayscale pointer-events-none transition-all duration-300">${item.emoji}</span>`;
+                
+                // HTML5 Drop Events
+                el.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    if (!el.classList.contains('matched')) el.classList.add('bg-amber-100', 'border-amber-500');
+                });
+                el.addEventListener('dragleave', () => {
+                    el.classList.remove('bg-amber-100', 'border-amber-500');
+                });
+                el.addEventListener('drop', e => {
+                    e.preventDefault();
+                    el.classList.remove('bg-amber-100', 'border-amber-500');
+                    if (el.classList.contains('matched')) return;
+
+                    const draggedId = e.dataTransfer.getData('text/plain');
+                    if (draggedId === el.dataset.id) {
+                        // Match!
+                        el.classList.add('matched', 'bg-green-100', 'border-green-500');
+                        el.classList.remove('border-dashed', 'border-amber-300');
+                        
+                        const wordEl = document.querySelector(`.g3-word[data-id="${draggedId}"]`);
+                        if(wordEl) wordEl.style.visibility = 'hidden';
+
+                        const pluralText = wordData.find(w => w.singular === draggedId).plural;
+                        el.innerHTML = `<span class="text-4xl sm:text-5xl mr-3 drop-shadow-sm">${item.emoji}</span><span class="text-2xl sm:text-3xl font-bold text-green-800 fredoka">${pluralText}</span>`;
+                        
+                        g3MatchesFound++;
+                        if (g3MatchesFound === 5) {
+                            setTimeout(() => document.getElementById('g3-win-overlay').classList.remove('hidden'), 600);
+                        }
+                    } else {
+                        // Mismatch
+                        el.classList.add('error-shake');
+                        setTimeout(() => el.classList.remove('error-shake'), 400);
+                    }
+                });
+                emojisContainer.appendChild(el);
+            });
+
+            // Create Draggable Words
+            wordsList.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'g3-word draggable bg-white border-4 border-indigo-300 rounded-2xl p-3 sm:p-4 text-center text-xl sm:text-2xl font-bold text-indigo-900 shadow-md hover:shadow-lg hover:border-indigo-400 flex items-center justify-center h-[80px] sm:h-[100px] transition-all fredoka select-none cursor-grab active:cursor-grabbing';
+                el.innerText = item.plural;
+                el.dataset.id = item.singular;
+                el.draggable = true;
+
+                // Drag Events
+                el.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', item.singular);
+                    // Slight delay for Firefox drag visual
+                    setTimeout(() => el.classList.add('dragging', 'opacity-50', 'scale-95'), 10);
+                });
+                el.addEventListener('dragend', () => {
+                    el.classList.remove('dragging', 'opacity-50', 'scale-95');
+                });
+
+                // Add mobile touch-to-drag support for HTML5 DnD (Polyfill-like)
+                // Note: Standard HTML5 drag and drop is tough on mobile without a polyfill.
+                // For simplicity in a single file, we advise students to use desktop/mouse for game 3, 
+                // but adding touch action styling above helps.
+
+                wordsContainer.appendChild(el);
+            });
+        }
+
+        // Init main menu
+        showMenu();
+    </script>
+</body>
+</html>
