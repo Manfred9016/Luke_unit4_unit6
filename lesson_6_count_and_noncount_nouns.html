@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 6: Count and Noncount Nouns</title>
+    <title>Lesson 6: Count/Noncount Nouns & Spelling</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -58,7 +58,6 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
         }
 
-        /* Correct/Incorrect state styles */
         .correct-bg {
             background-color: #dcfce7 !important;
             border-color: #22c55e !important;
@@ -78,15 +77,15 @@
         <header class="bg-gradient-to-r from-teal-400 to-blue-500 p-8 text-center relative overflow-hidden">
             <div class="relative z-10">
                 <span class="bg-yellow-400 text-yellow-900 text-sm font-bold uppercase tracking-wider py-1 px-3 rounded-full mb-4 inline-block shadow-sm">Lesson 6</span>
-                <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">Count and Noncount Nouns</h1>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">Nouns & Spelling Practice</h1>
             </div>
-            <!-- Decorative background elements -->
             <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-white opacity-10"></div>
             <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 rounded-full bg-white opacity-10"></div>
         </header>
 
         <div class="p-6 md:p-10 space-y-12">
             
+            <!-- Section A: Look and Learn -->
             <section>
                 <div class="flex items-center gap-3 mb-6">
                     <div class="bg-yellow-400 text-yellow-900 rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">A</div>
@@ -94,7 +93,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Count Noun Card -->
                     <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 shadow-sm">
                         <h3 class="text-xl font-bold text-blue-700 mb-4 border-b-2 border-blue-200 pb-2 flex items-center gap-2">
                             <span>🔵</span> Count Noun
@@ -124,7 +122,6 @@
                         </div>
                     </div>
 
-                    <!-- Noncount Noun Card -->
                     <div class="bg-green-50 border-2 border-green-200 rounded-2xl p-6 shadow-sm">
                         <h3 class="text-xl font-bold text-green-700 mb-4 border-b-2 border-green-200 pb-2 flex items-center gap-2">
                             <span>🟩</span> Noncount Noun
@@ -138,7 +135,6 @@
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-4 items-center border-t border-green-100 pt-3 opacity-0 hidden md:block">
-                                <!-- Spacer to align with the plural row on the left -->
                                 <span>&nbsp;</span>
                             </div>
                             <div class="grid grid-cols-2 gap-4 items-center border-t border-green-100 pt-3">
@@ -153,6 +149,7 @@
                 </div>
             </section>
 
+            <!-- Section B: Sorting Game -->
             <section>
                 <div class="flex items-center gap-3 mb-6">
                     <div class="bg-teal-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">B</div>
@@ -161,17 +158,16 @@
                 
                 <p class="text-gray-600 mb-4 font-medium">Drag and drop the words into the correct boxes.</p>
 
-                <!-- Word Bank -->
                 <div id="word-bank" class="drop-zone bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-4 mb-6 flex flex-wrap gap-3 items-center justify-center min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <!-- Count items -->
                     <div id="word-1" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">an orange</div>
-                    <div id="word-2" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">2 cookies</div>
-                    <div id="word-3" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">3 leaves</div>
+                    <div id="word-2" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">two cookies</div>
+                    <div id="word-3" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">three leaves</div>
                     <div id="word-4" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">a sandwich</div>
-                    <div id="word-5" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">2 bananas</div>
-                    <div id="word-6" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">3 pens</div>
+                    <div id="word-5" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">two bananas</div>
+                    <div id="word-6" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="count">three pens</div>
+                    <div id="word-7" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">four apples</div>
+                    <div id="word-8" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">an umbrella</div>
                     
-                    <!-- Noncount items -->
                     <div id="word-7" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">water</div>
                     <div id="word-8" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">bread</div>
                     <div id="word-9" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">homework</div>
@@ -180,28 +176,24 @@
                     <div id="word-12" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="noncount">money</div>
                 </div>
 
-                <!-- Drop Zones -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-blue-50/50 border-2 border-blue-200 rounded-2xl flex flex-col overflow-hidden shadow-inner">
                         <div class="bg-blue-100 py-3 text-center border-b border-blue-200">
                             <h3 class="font-bold text-blue-800">Count Nouns</h3>
                         </div>
-                        <div id="zone-count" class="drop-zone p-4 flex-1 flex flex-wrap gap-2 items-start content-start" data-expected="count" ondrop="drop(event)" ondragover="allowDrop(event)">
-                            <!-- Drop items here -->
-                        </div>
+                        <div id="zone-count" class="drop-zone p-4 flex-1 flex flex-wrap gap-2 items-start content-start" data-expected="count" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                     </div>
 
                     <div class="bg-green-50/50 border-2 border-green-200 rounded-2xl flex flex-col overflow-hidden shadow-inner">
                         <div class="bg-green-100 py-3 text-center border-b border-green-200">
                             <h3 class="font-bold text-green-800">Noncount Nouns</h3>
                         </div>
-                        <div id="zone-noncount" class="drop-zone p-4 flex-1 flex flex-wrap gap-2 items-start content-start" data-expected="noncount" ondrop="drop(event)" ondragover="allowDrop(event)">
-                            <!-- Drop items here -->
-                        </div>
+                        <div id="zone-noncount" class="drop-zone p-4 flex-1 flex flex-wrap gap-2 items-start content-start" data-expected="noncount" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                     </div>
                 </div>
             </section>
 
+            <!-- Section C: a / an / some -->
             <section>
                 <div class="flex items-center gap-3 mb-6 mt-12">
                     <div class="bg-indigo-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">C</div>
@@ -220,17 +212,11 @@
                                 <div class="flex flex-wrap items-center gap-2">
                                     I see 
                                     <select class="dropdown-input answer-select" data-answer="a">
-                                        <option value=""></option>
-                                        <option value="a">a</option>
-                                        <option value="an">an</option>
-                                        <option value="some">some</option>
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
                                     </select>
                                     sandwich. I see
                                     <select class="dropdown-input answer-select" data-answer="some">
-                                        <option value=""></option>
-                                        <option value="a">a</option>
-                                        <option value="an">an</option>
-                                        <option value="some">some</option>
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
                                     </select>
                                     juice. 🥪🧃
                                 </div>
@@ -244,17 +230,11 @@
                                 <div class="flex flex-wrap items-center gap-2">
                                     I see 
                                     <select class="dropdown-input answer-select" data-answer="an">
-                                        <option value=""></option>
-                                        <option value="a">a</option>
-                                        <option value="an">an</option>
-                                        <option value="some">some</option>
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
                                     </select>
                                     apple. I see
                                     <select class="dropdown-input answer-select" data-answer="some">
-                                        <option value=""></option>
-                                        <option value="a">a</option>
-                                        <option value="an">an</option>
-                                        <option value="some">some</option>
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
                                     </select>
                                     cookies. 🍎🍪
                                 </div>
@@ -268,26 +248,311 @@
                                 <div class="flex flex-wrap items-center gap-2">
                                     I see 
                                     <select class="dropdown-input answer-select" data-answer="some">
-                                        <option value=""></option>
-                                        <option value="a">a</option>
-                                        <option value="an">an</option>
-                                        <option value="some">some</option>
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
                                     </select>
                                     oranges. I see
                                     <select class="dropdown-input answer-select" data-answer="some">
-                                        <option value=""></option>
-                                        <option value="a">a</option>
-                                        <option value="an">an</option>
-                                        <option value="some">some</option>
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
                                     </select>
                                     bread. 🍊🍞
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Sentence 4 -->
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">4</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    I see 
+                                    <select class="dropdown-input answer-select" data-answer="a">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    banana. I see
+                                    <select class="dropdown-input answer-select" data-answer="some">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    milk. 🍌🥛
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sentence 5 -->
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 bg-indigo-50/50 p-4 rounded-xl border border-indigo-50">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">5</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    I see 
+                                    <select class="dropdown-input answer-select" data-answer="an">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    egg. I see
+                                    <select class="dropdown-input answer-select" data-answer="some">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    bacon. 🥚🥓
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sentence 6 -->
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">6</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    I see 
+                                    <select class="dropdown-input answer-select" data-answer="some">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    water. I see
+                                    <select class="dropdown-input answer-select" data-answer="a">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    cup. 💧☕
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sentence 7 -->
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 bg-indigo-50/50 p-4 rounded-xl border border-indigo-50">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">7</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    I see 
+                                    <select class="dropdown-input answer-select" data-answer="a">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    carrot. I see
+                                    <select class="dropdown-input answer-select" data-answer="some">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    soup. 🥕🥣
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sentence 8 -->
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">8</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    I see 
+                                    <select class="dropdown-input answer-select" data-answer="an">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    onion. I see
+                                    <select class="dropdown-input answer-select" data-answer="some">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    tomatoes. 🧅🍅
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sentence 9 -->
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 bg-indigo-50/50 p-4 rounded-xl border border-indigo-50">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">9</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    I see 
+                                    <select class="dropdown-input answer-select" data-answer="some">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    money. I see
+                                    <select class="dropdown-input answer-select" data-answer="a">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    wallet. 💵👛
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sentence 10 -->
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">10</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    I see 
+                                    <select class="dropdown-input answer-select" data-answer="a">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    book. I see
+                                    <select class="dropdown-input answer-select" data-answer="some">
+                                        <option value=""></option><option value="a">a</option><option value="an">an</option><option value="some">some</option>
+                                    </select>
+                                    paper. 📖📄
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+            </section>
 
+            <!-- Section D: Complete the Sentences -->
+            <section>
+                <div class="flex items-center gap-3 mb-6 mt-12">
+                    <div class="bg-orange-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">D</div>
+                    <h2 class="text-2xl font-bold text-gray-700">Complete the Sentences 📝</h2>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border-t-4 border-orange-400">
+                    <p class="text-gray-600 mb-4 font-medium">Use the words to complete the sentences. Remember the rules for capitalization!</p>
+                    
+                    <div class="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6 text-center font-bold text-orange-800 flex flex-wrap justify-center gap-4">
+                        <span>answer</span> <span>find</span> <span>its</span> <span>miss</span> <span>old</span>
+                        <span>round</span> <span>then</span> <span>until</span> <span>what</span> <span>young</span>
+                    </div>
+
+                    <div class="space-y-4 text-lg text-gray-700">
+                        <script>
+                            const optionsHTML = `
+                                <option value=""></option>
+                                <option value="answer">answer</option>
+                                <option value="find">find</option>
+                                <option value="its">its</option>
+                                <option value="Its">Its</option>
+                                <option value="miss">miss</option>
+                                <option value="old">old</option>
+                                <option value="round">round</option>
+                                <option value="then">then</option>
+                                <option value="until">until</option>
+                                <option value="what">what</option>
+                                <option value="What">What</option>
+                                <option value="young">young</option>
+                            `;
+                        </script>
+
+                        <div class="flex gap-3">
+                            <span class="font-bold mt-1">1.</span>
+                            <div class="leading-loose">
+                                <select class="dropdown-input answer-select" data-answer="Its" onfocus="this.innerHTML=optionsHTML"></select>
+                                like a perfect circle. I can't believe how 
+                                <select class="dropdown-input answer-select" data-answer="round" onfocus="this.innerHTML=optionsHTML"></select>
+                                that guy's head is.
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <span class="font-bold mt-1">2.</span>
+                            <div class="leading-loose">
+                                My grandpa is very 
+                                <select class="dropdown-input answer-select" data-answer="old" onfocus="this.innerHTML=optionsHTML"></select>, 
+                                but I am 
+                                <select class="dropdown-input answer-select" data-answer="young" onfocus="this.innerHTML=optionsHTML"></select>.
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <span class="font-bold mt-1">3.</span>
+                            <div class="leading-loose">
+                                <select class="dropdown-input answer-select" data-answer="What" onfocus="this.innerHTML=optionsHTML"></select>
+                                did you 
+                                <select class="dropdown-input answer-select" data-answer="find" onfocus="this.innerHTML=optionsHTML"></select>
+                                inside the box? Candy? Cool!
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <span class="font-bold mt-1">4.</span>
+                            <div class="leading-loose">
+                                I raise my hand because I know the 
+                                <select class="dropdown-input answer-select" data-answer="answer" onfocus="this.innerHTML=optionsHTML"></select>
+                                to the question.
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <span class="font-bold mt-1">5.</span>
+                            <div class="leading-loose">
+                                First, next, 
+                                <select class="dropdown-input answer-select" data-answer="then" onfocus="this.innerHTML=optionsHTML"></select>, 
+                                and last.
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <span class="font-bold mt-1">6.</span>
+                            <div class="leading-loose">
+                                A baby bird will stay in 
+                                <select class="dropdown-input answer-select" data-answer="its" onfocus="this.innerHTML=optionsHTML"></select>
+                                parents' nest 
+                                <select class="dropdown-input answer-select" data-answer="until" onfocus="this.innerHTML=optionsHTML"></select>
+                                it is old enough to fly away.
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <span class="font-bold mt-1">7.</span>
+                            <div class="leading-loose">
+                                I haven't seen my pet in a long time. I 
+                                <select class="dropdown-input answer-select" data-answer="miss" onfocus="this.innerHTML=optionsHTML"></select>
+                                her so much.
+                            </div>
+                        </div>
+
+                        <script>
+                            document.querySelectorAll('.dropdown-input.answer-select').forEach(select => {
+                                if(select.innerHTML === "") select.innerHTML = optionsHTML;
+                            });
+                        </script>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section E: Spelling Word Sort -->
+            <section>
+                <div class="flex items-center gap-3 mb-6 mt-12">
+                    <div class="bg-fuchsia-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">E</div>
+                    <h2 class="text-2xl font-bold text-gray-700">Spelling Word Sort 🔠</h2>
+                </div>
+                
+                <p class="text-gray-600 mb-4 font-medium">Drag and drop the spelling words into the correct columns.</p>
+
+                <!-- Word Bank 2 -->
+                <div id="word-bank-2" class="drop-zone bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-4 mb-6 flex flex-wrap gap-3 items-center justify-center min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <!-- Short vowel items -->
+                    <div id="spell-1" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">tap</div>
+                    <div id="spell-2" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">fin</div>
+                    <div id="spell-3" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">scrap</div>
+                    <div id="spell-4" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">rob</div>
+                    <div id="spell-5" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">cap</div>
+                    <div id="spell-6" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">slid</div>
+                    <div id="spell-13" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">pin</div>
+                    <div id="spell-15" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">cut</div>
+                    <div id="spell-17" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">hop</div>
+                    <div id="spell-19" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">mad</div>
+                    <div id="spell-21" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">cub</div>
+                    
+                    <!-- Long vowel items -->
+                    <div id="spell-7" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">tape</div>
+                    <div id="spell-8" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">fine</div>
+                    <div id="spell-9" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">scrape</div>
+                    <div id="spell-10" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">robe</div>
+                    <div id="spell-11" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">cape</div>
+                    <div id="spell-12" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">slide</div>
+                    <div id="spell-14" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">pine</div>
+                    <div id="spell-16" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">cute</div>
+                    <div id="spell-18" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">hope</div>
+                    <div id="spell-20" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">made</div>
+                    <div id="spell-22" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">cube</div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-pink-50/50 border-2 border-pink-200 rounded-2xl flex flex-col overflow-hidden shadow-inner">
+                        <div class="bg-pink-100 py-3 text-center border-b border-pink-200 px-2">
+                            <h3 class="font-bold text-pink-800">Words with short vowels (CVC)</h3>
+                        </div>
+                        <div id="zone-short" class="drop-zone p-4 flex-1 flex flex-col gap-2 items-center" data-expected="short" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+
+                    <div class="bg-purple-50/50 border-2 border-purple-200 rounded-2xl flex flex-col overflow-hidden shadow-inner">
+                        <div class="bg-purple-100 py-3 text-center border-b border-purple-200 px-2">
+                            <h3 class="font-bold text-purple-800">Words with long vowels (VCe)</h3>
+                        </div>
+                        <div id="zone-long" class="drop-zone p-4 flex-1 flex flex-col gap-2 items-center" data-expected="long" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                </div>
             </section>
 
             <div class="text-center pt-8">
@@ -311,11 +576,9 @@
     </div>
 
     <script>
-        // --- Drag and Drop Logic ---
         function allowDrop(ev) {
             ev.preventDefault();
             ev.dataTransfer.dropEffect = "move";
-            // Visual feedback
             if(ev.target.classList.contains('drop-zone')) {
                 ev.target.classList.add('drag-over');
             }
@@ -332,30 +595,24 @@
             ev.preventDefault();
             const data = ev.dataTransfer.getData("text");
             const draggedElement = document.getElementById(data);
-            
-            // Find the closest drop zone
             const dropZone = ev.target.closest('.drop-zone');
             
             if (dropZone && draggedElement) {
                 dropZone.appendChild(draggedElement);
             }
 
-            // Clean up styling
             draggedElement.classList.remove('dragging');
             document.querySelectorAll('.drop-zone').forEach(zone => {
                 zone.classList.remove('drag-over');
             });
         }
 
-        // Remove drag-over visual when leaving
         document.querySelectorAll('.drop-zone').forEach(zone => {
             zone.addEventListener('dragleave', (e) => {
                 zone.classList.remove('drag-over');
             });
         });
 
-
-        // --- Validation Logic ---
         document.addEventListener('DOMContentLoaded', () => {
             const checkBtn = document.getElementById('check-btn');
             const retryBtn = document.getElementById('retry-btn');
@@ -363,56 +620,49 @@
             const scoreDisplay = document.getElementById('score-display');
             const resultTitle = document.getElementById('result-title');
             
-            const draggables = document.querySelectorAll('.draggable-item');
-            const dropdowns = document.querySelectorAll('.answer-select');
-            
-            const totalPoints = draggables.length + dropdowns.length; // 12 + 6 = 18
-
             checkBtn.addEventListener('click', () => {
                 let score = 0;
+                const draggables = document.querySelectorAll('.draggable-item');
+                const dropdowns = document.querySelectorAll('.answer-select');
+                const totalPoints = draggables.length + dropdowns.length;
 
-                // 1. Grade Drag and Drop
                 draggables.forEach(item => {
                     item.classList.remove('correct-bg', 'incorrect-bg');
-                    const expectedType = item.dataset.type; // "count" or "noncount"
-                    const currentContainerId = item.parentElement.id;
+                    const expectedType = item.dataset.type; 
+                    const currentContainer = item.parentElement;
                     
-                    if (currentContainerId === 'zone-count' && expectedType === 'count') {
-                        item.classList.add('correct-bg');
-                        score++;
-                    } else if (currentContainerId === 'zone-noncount' && expectedType === 'noncount') {
-                        item.classList.add('correct-bg');
-                        score++;
+                    if (currentContainer.dataset.expected) {
+                        if (currentContainer.dataset.expected === expectedType) {
+                            item.classList.add('correct-bg');
+                            score++;
+                        } else {
+                            item.classList.add('incorrect-bg');
+                        }
                     } else {
-                        // In word bank or wrong zone
                         item.classList.add('incorrect-bg');
                     }
-                    // Disable dragging after submit
                     item.setAttribute('draggable', 'false');
                 });
 
-                // 2. Grade Dropdowns
                 dropdowns.forEach(select => {
                     select.classList.remove('correct-bg', 'incorrect-bg');
                     const userAnswer = select.value;
                     const correctAnswer = select.dataset.answer;
 
-                    if (userAnswer === correctAnswer) {
+                    if (userAnswer === correctAnswer && userAnswer !== "") {
                         select.classList.add('correct-bg');
                         score++;
                     } else {
                         select.classList.add('incorrect-bg');
                     }
-                    // Disable changing after submit
                     select.disabled = true;
                 });
 
-                // Show Results
                 scoreDisplay.textContent = `${score} / ${totalPoints}`;
                 
                 if (score === totalPoints) {
-                    resultTitle.textContent = "Perfect Score! 🏆You are as Strong as Goku🌟";
-                } else if (score >= totalPoints - 4) {
+                    resultTitle.textContent = "Perfect Score! 🏆 You are as Strong as Goku🌟";
+                } else if (score >= totalPoints - Math.floor(totalPoints * 0.1)) {
                     resultTitle.textContent = "Great Job! Keep it up! Luke 💪 ⭐";
                 } else {
                     resultTitle.textContent = "Keep Practicing! You can Do It! 💪";
@@ -420,32 +670,36 @@
 
                 resultsContainer.classList.remove('hidden');
                 checkBtn.classList.add('hidden');
-                
-                // Scroll to results
                 resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
             });
 
-            // Retry logic
             retryBtn.addEventListener('click', () => {
-                // Reset Dropdowns
+                const draggables = document.querySelectorAll('.draggable-item');
+                const dropdowns = document.querySelectorAll('.answer-select');
+
                 dropdowns.forEach(select => {
                     select.value = "";
                     select.classList.remove('correct-bg', 'incorrect-bg');
                     select.disabled = false;
                 });
 
-                // Reset Drag and Drop items
-                const wordBank = document.getElementById('word-bank');
+                const wordBank1 = document.getElementById('word-bank');
+                const wordBank2 = document.getElementById('word-bank-2');
+                
                 draggables.forEach(item => {
                     item.classList.remove('correct-bg', 'incorrect-bg');
                     item.setAttribute('draggable', 'true');
-                    wordBank.appendChild(item); // Move back to word bank
+                    
+                    const type = item.dataset.type;
+                    if (type === 'count' || type === 'noncount') {
+                        wordBank1.appendChild(item);
+                    } else if (type === 'short' || type === 'long') {
+                        wordBank2.appendChild(item);
+                    }
                 });
 
                 resultsContainer.classList.add('hidden');
                 checkBtn.classList.remove('hidden');
-                
-                // Scroll back to top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
