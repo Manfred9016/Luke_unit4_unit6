@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson: Comparatives, Superlatives, Spelling & Vocab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0fdf4;
+            background-image: radial-gradient(#bbf7d0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .draggable-item {
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .draggable-item:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+        .draggable-item.dragging {
+            opacity: 0.5;
+        }
+
+        .drop-zone {
+            min-height: 150px;
+            transition: background-color 0.3s;
+        }
+        .drop-zone.drag-over {
+            background-color: #e0e7ff; 
+            border-color: #4f46e5;
+        }
+
+        .dropdown-input {
+            appearance: none;
+            background-color: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 0.25rem 1.5rem 0.25rem 0.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            outline: none;
+            cursor: pointer;
+            text-align: center;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.25rem center;
+            background-size: 1rem;
+            transition: all 0.2s;
+        }
+        
+        .dropdown-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .correct-bg {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534 !important;
+        }
+        .incorrect-bg {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+
+        /* Flashcard Terminal Styles */
+        .terminal-bg {
+            background-color: #110808;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+        .terminal-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #ff8c00;
+            text-shadow: 0 0 10px #ff8c00, 0 0 20px #ff8c00;
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .flashcard-scene {
+            width: 100%;
+            max-width: 600px;
+            height: 350px;
+            margin: 0 auto;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flashcard.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            border: 2px solid #ff7300;
+            box-shadow: 0 0 15px rgba(255, 115, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-color: #1a0f0f;
+            color: white;
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+            justify-content: flex-start;
+            text-align: left;
+            align-items: flex-start;
+        }
+        .card-word {
+            font-size: 3rem;
+            color: #ff8c00;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+        .card-translation {
+            font-size: 2.5rem;
+            color: #ff8c00;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 1.5rem;
+            margin-top: 1rem;
+        }
+        .card-divider {
+            width: 100%;
+            border-top: 1px dashed #664433;
+            margin: 1rem 0;
+        }
+        .card-eng-sent {
+            color: #ffb732;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .card-chi-sent {
+            color: #9ca3af;
+            font-size: 1.1rem;
+        }
+        .nav-btn {
+            background: transparent;
+            color: #ff8c00;
+            border: 1px solid #ff8c00;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover {
+            background: rgba(255, 140, 0, 0.2);
+            box-shadow: 0 0 10px #ff8c00;
+        }
+        .nav-btn:disabled {
+            border-color: #553311;
+            color: #553311;
+            cursor: not-allowed;
+            box-shadow: none;
+            background: transparent;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 text-gray-800">
+
+    <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border-4 border-white">
+        
+        <header class="bg-gradient-to-r from-purple-500 to-indigo-600 p-8 text-center relative overflow-hidden">
+            <div class="relative z-10">
+                <span class="bg-yellow-400 text-yellow-900 text-sm font-bold uppercase tracking-wider py-1 px-3 rounded-full mb-4 inline-block shadow-sm">Grammar & Vocab</span>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">Comparatives & Superlatives</h1>
+            </div>
+            <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-white opacity-10"></div>
+            <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 rounded-full bg-white opacity-10"></div>
+        </header>
+
+        <div class="p-6 md:p-10 space-y-12">
+            
+            <!-- Section A: Look and Learn -->
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-yellow-400 text-yellow-900 rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">A</div>
+                    <h2 class="text-2xl font-bold text-gray-700">Look and Learn 🧠</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 shadow-sm">
+                        <h3 class="text-xl font-bold text-blue-700 mb-4 border-b-2 border-blue-200 pb-2 flex items-center gap-2">
+                            <span>⚖️</span> Comparative Adjectives
+                        </h3>
+                        <div class="space-y-4 text-lg">
+                            <p class="text-gray-600 text-sm font-bold uppercase">Compare TWO things</p>
+                            <div class="grid grid-cols-2 gap-4 items-center pt-2">
+                                <span class="text-gray-500 font-semibold text-sm">Short Words (+er)</span>
+                                <div>
+                                    <p class="font-bold text-blue-600">taller</p>
+                                    <p class="font-bold text-blue-600">faster</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 items-center border-t border-blue-100 pt-3">
+                                <span class="text-gray-500 font-semibold text-sm">Long Words (more)</span>
+                                <div>
+                                    <p class="font-bold text-gray-800">more <span class="text-blue-600">beautiful</span></p>
+                                    <p class="font-bold text-gray-800">more <span class="text-blue-600">expensive</span></p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 italic mt-2">* Always use <b>than</b> (e.g., taller than me)</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 border-2 border-purple-200 rounded-2xl p-6 shadow-sm">
+                        <h3 class="text-xl font-bold text-purple-700 mb-4 border-b-2 border-purple-200 pb-2 flex items-center gap-2">
+                            <span>👑</span> Superlative Adjectives
+                        </h3>
+                        <div class="space-y-4 text-lg">
+                            <p class="text-gray-600 text-sm font-bold uppercase">Compare THREE OR MORE things</p>
+                            <div class="grid grid-cols-2 gap-4 items-center pt-2">
+                                <span class="text-gray-500 font-semibold text-sm">Short Words (+est)</span>
+                                <div>
+                                    <p class="font-bold text-purple-600">the tallest</p>
+                                    <p class="font-bold text-purple-600">the fastest</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 items-center border-t border-purple-100 pt-3">
+                                <span class="text-gray-500 font-semibold text-sm">Long Words (most)</span>
+                                <div>
+                                    <p class="font-bold text-gray-800">the most <span class="text-purple-600">beautiful</span></p>
+                                    <p class="font-bold text-gray-800">the most <span class="text-purple-600">expensive</span></p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 italic mt-2">* Always use <b>the</b> before the word!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section B: Sorting Game -->
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-teal-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">B</div>
+                    <h2 class="text-2xl font-bold text-gray-700">Sorting Game 🎯</h2>
+                </div>
+                
+                <p class="text-gray-600 mb-4 font-medium">Drag and drop the words into the correct boxes.</p>
+
+                <div id="word-bank" class="drop-zone bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-4 mb-6 flex flex-wrap gap-3 items-center justify-center min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <div id="comp-1" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="comp">smarter</div>
+                    <div id="comp-2" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="comp">more exciting</div>
+                    <div id="comp-3" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="comp">better</div>
+                    <div id="comp-4" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-indigo-700 select-none" draggable="true" ondragstart="drag(event)" data-type="comp">hotter</div>
+                    
+                    <div id="sup-1" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="sup">the smartest</div>
+                    <div id="sup-2" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="sup">the most exciting</div>
+                    <div id="sup-3" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="sup">the best</div>
+                    <div id="sup-4" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-fuchsia-700 select-none" draggable="true" ondragstart="drag(event)" data-type="sup">the hottest</div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50/50 border-2 border-blue-200 rounded-2xl flex flex-col overflow-hidden shadow-inner">
+                        <div class="bg-blue-100 py-3 text-center border-b border-blue-200">
+                            <h3 class="font-bold text-blue-800">Comparative</h3>
+                        </div>
+                        <div id="zone-count" class="drop-zone p-4 flex-1 flex flex-wrap gap-2 items-start content-start" data-expected="comp" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+
+                    <div class="bg-purple-50/50 border-2 border-purple-200 rounded-2xl flex flex-col overflow-hidden shadow-inner">
+                        <div class="bg-purple-100 py-3 text-center border-b border-purple-200">
+                            <h3 class="font-bold text-purple-800">Superlative</h3>
+                        </div>
+                        <div id="zone-noncount" class="drop-zone p-4 flex-1 flex flex-wrap gap-2 items-start content-start" data-expected="sup" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section C: Fill in the blanks -->
+            <section>
+                <div class="flex items-center gap-3 mb-6 mt-12">
+                    <div class="bg-indigo-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">C</div>
+                    <h2 class="text-2xl font-bold text-gray-700">Choose the Correct Form ✍️</h2>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border-t-4 border-indigo-400">
+                    <div class="space-y-6 text-lg md:text-xl text-gray-700">
+                        
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 bg-indigo-50/50 p-4 rounded-xl border border-indigo-50">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">1</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    A cheetah is 
+                                    <select class="dropdown-input answer-select" data-answer="faster">
+                                        <option value=""></option><option value="faster">faster</option><option value="the fastest">the fastest</option>
+                                    </select>
+                                    than a lion.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">2</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    Mount Everest is 
+                                    <select class="dropdown-input answer-select" data-answer="the highest">
+                                        <option value=""></option><option value="higher">higher</option><option value="the highest">the highest</option>
+                                    </select>
+                                    mountain in the world.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 bg-indigo-50/50 p-4 rounded-xl border border-indigo-50">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">3</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    This puzzle is 
+                                    <select class="dropdown-input answer-select" data-answer="more difficult">
+                                        <option value=""></option><option value="more difficult">more difficult</option><option value="the most difficult">the most difficult</option>
+                                    </select>
+                                    than the last one.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl">
+                            <div class="flex items-center gap-3 w-full">
+                                <span class="bg-indigo-100 text-indigo-700 rounded-full w-8 h-8 flex flex-shrink-0 items-center justify-center font-bold text-sm">4</span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    That was 
+                                    <select class="dropdown-input answer-select" data-answer="the best">
+                                        <option value=""></option><option value="better">better</option><option value="the best">the best</option>
+                                    </select>
+                                    movie I have ever seen!
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section D: Spelling Word Sort -->
+            <section>
+                <div class="flex items-center gap-3 mb-6 mt-12">
+                    <div class="bg-pink-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">D</div>
+                    <h2 class="text-2xl font-bold text-gray-700">Spelling Sort (Short vs Long Vowels) 🔠</h2>
+                </div>
+                
+                <p class="text-gray-600 mb-4 font-medium">Drag and drop the Week's spelling words into the correct columns.</p>
+
+                <!-- Word Bank for Spelling -->
+                <div id="word-bank-2" class="drop-zone bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-4 mb-6 flex flex-wrap gap-3 items-center justify-center min-h-[100px]" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <div id="spell-1" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">tap</div>
+                    <div id="spell-2" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">tape</div>
+                    <div id="spell-3" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">rob</div>
+                    <div id="spell-4" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">robe</div>
+                    <div id="spell-5" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">slid</div>
+                    <div id="spell-6" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">slide</div>
+                    <div id="spell-7" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-pink-700 select-none" draggable="true" ondragstart="drag(event)" data-type="short">scrap</div>
+                    <div id="spell-8" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">scrape</div>
+                    <div id="spell-9" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">globe</div>
+                    <div id="spell-10" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">place</div>
+                    <div id="spell-11" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">grade</div>
+                    <div id="spell-12" class="draggable-item bg-white border border-gray-200 shadow-sm rounded-lg px-4 py-2 font-bold text-purple-700 select-none" draggable="true" ondragstart="drag(event)" data-type="long">drag</div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-pink-50/50 border-2 border-pink-200 rounded-2xl flex flex-col overflow-hidden shadow-inner">
+                        <div class="bg-pink-100 py-3 text-center border-b border-pink-200 px-2">
+                            <h3 class="font-bold text-pink-800">Words with short vowels</h3>
+                        </div>
+                        <div id="zone-short" class="drop-zone p-4 flex-1 flex flex-col gap-2 items-center" data-expected="short" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+
+                    <div class="bg-purple-50/50 border-2 border-purple-200 rounded-2xl flex flex-col overflow-hidden shadow-inner">
+                        <div class="bg-purple-100 py-3 text-center border-b border-purple-200 px-2">
+                            <h3 class="font-bold text-purple-800">Words with long vowels (Silent e)</h3>
+                        </div>
+                        <div id="zone-long" class="drop-zone p-4 flex-1 flex flex-col gap-2 items-center" data-expected="long" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section E: Vocabulary Terminal -->
+            <section>
+                <div class="flex items-center gap-3 mb-6 mt-12">
+                    <div class="bg-orange-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow-md">E</div>
+                    <h2 class="text-2xl font-bold text-gray-700">Vocabulary Terminal 💻</h2>
+                </div>
+
+                <div class="terminal-bg">
+                    <h3 class="terminal-title">Vocabulary Terminal</h3>
+                    <p class="text-gray-400 text-center mb-6" id="card-counter">Card 1 of 11 (Click card to flip)</p>
+
+                    <div class="flashcard-scene" onclick="flipCard()">
+                        <div class="flashcard" id="flashcard">
+                            <!-- Front -->
+                            <div class="flashcard-face">
+                                <div class="card-word" id="front-word">battleground</div>
+                            </div>
+                            <!-- Back -->
+                            <div class="flashcard-face flashcard-back">
+                                <div class="w-full flex justify-center mb-2">
+                                    <!-- 已加上 id="card-emoji" 讓 JavaScript 可以找到並更新它 -->
+                                    <span class="text-3xl" id="card-emoji">🐾</span>
+                                </div>
+                                <div class="card-translation" id="back-translation">戰場</div>
+                                <div class="card-divider"></div>
+                                <div class="card-eng-sent" id="back-eng">The field became a battleground.</div>
+                                <div class="card-chi-sent" id="back-chi">這片田野成了戰場。</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center gap-6 mt-8">
+                        <button class="nav-btn" id="prev-btn" onclick="changeCard(-1)" disabled>&lt; Prev</button>
+                        <button class="nav-btn" id="next-btn" onclick="changeCard(1)">Next &gt;</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Grading Buttons -->
+            <div class="text-center pt-8">
+                <button id="check-btn" class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-extrabold py-4 px-12 rounded-full shadow-lg transition-all transform hover:-translate-y-1 hover:shadow-xl text-xl w-full md:w-auto focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    Check Answers ✨
+                </button>
+            </div>
+
+            <div id="results-container" class="hidden mt-6 p-8 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-300 text-center shadow-inner">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2" id="result-title">Great Effort!</h2>
+                <div id="score-display" class="text-5xl font-black text-indigo-600 mb-3 tracking-tight"></div>
+                <p class="text-lg text-slate-600 font-medium mb-4">
+                    Review your answers. Green boxes mean correct, red means incorrect or missed.
+                </p>
+                <button id="retry-btn" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-full transition-colors focus:outline-none">
+                    Try Again ↺
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts for Drag & Drop and Flashcards -->
+    <script>
+        /* Drag and Drop Logic */
+        function allowDrop(ev) {
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = "move";
+            if(ev.target.classList.contains('drop-zone')) {
+                ev.target.classList.add('drag-over');
+            }
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+            setTimeout(() => {
+                ev.target.classList.add('dragging');
+            }, 0);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            const draggedElement = document.getElementById(data);
+            const dropZone = ev.target.closest('.drop-zone');
+            
+            if (dropZone && draggedElement) {
+                dropZone.appendChild(draggedElement);
+            }
+
+            draggedElement.classList.remove('dragging');
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.classList.remove('drag-over');
+            });
+        }
+
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.addEventListener('dragleave', (e) => {
+                zone.classList.remove('drag-over');
+            });
+        });
+
+        /* Grading Logic */
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkBtn = document.getElementById('check-btn');
+            const retryBtn = document.getElementById('retry-btn');
+            const resultsContainer = document.getElementById('results-container');
+            const scoreDisplay = document.getElementById('score-display');
+            const resultTitle = document.getElementById('result-title');
+            
+            checkBtn.addEventListener('click', () => {
+                let score = 0;
+                const draggables = document.querySelectorAll('.draggable-item');
+                const dropdowns = document.querySelectorAll('.answer-select');
+                const totalPoints = draggables.length + dropdowns.length;
+
+                draggables.forEach(item => {
+                    item.classList.remove('correct-bg', 'incorrect-bg');
+                    const expectedType = item.dataset.type; 
+                    const currentContainer = item.parentElement;
+                    
+                    if (currentContainer.dataset.expected) {
+                        if (currentContainer.dataset.expected === expectedType) {
+                            item.classList.add('correct-bg');
+                            score++;
+                        } else {
+                            item.classList.add('incorrect-bg');
+                        }
+                    } else {
+                        item.classList.add('incorrect-bg');
+                    }
+                    item.setAttribute('draggable', 'false');
+                });
+
+                dropdowns.forEach(select => {
+                    select.classList.remove('correct-bg', 'incorrect-bg');
+                    const userAnswer = select.value;
+                    const correctAnswer = select.dataset.answer;
+
+                    if (userAnswer === correctAnswer && userAnswer !== "") {
+                        select.classList.add('correct-bg');
+                        score++;
+                    } else {
+                        select.classList.add('incorrect-bg');
+                    }
+                    select.disabled = true;
+                });
+
+                scoreDisplay.textContent = `${score} / ${totalPoints}`;
+                
+                if (score === totalPoints) {
+                    resultTitle.textContent = "Perfect Score! 🏆 Excellent Grammar!";
+                } else if (score >= totalPoints - Math.floor(totalPoints * 0.1)) {
+                    resultTitle.textContent = "Great Job! Keep it up! ⭐";
+                } else {
+                    resultTitle.textContent = "Keep Practicing! You can Do It! 💪";
+                }
+
+                resultsContainer.classList.remove('hidden');
+                checkBtn.classList.add('hidden');
+                resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            });
+
+            retryBtn.addEventListener('click', () => {
+                const draggables = document.querySelectorAll('.draggable-item');
+                const dropdowns = document.querySelectorAll('.answer-select');
+
+                dropdowns.forEach(select => {
+                    select.value = "";
+                    select.classList.remove('correct-bg', 'incorrect-bg');
+                    select.disabled = false;
+                });
+
+                const wordBank1 = document.getElementById('word-bank');
+                const wordBank2 = document.getElementById('word-bank-2');
+                
+                draggables.forEach(item => {
+                    item.classList.remove('correct-bg', 'incorrect-bg');
+                    item.setAttribute('draggable', 'true');
+                    
+                    const type = item.dataset.type;
+                    if (type === 'comp' || type === 'sup') {
+                        wordBank1.appendChild(item);
+                    } else if (type === 'short' || type === 'long') {
+                        wordBank2.appendChild(item);
+                    }
+                });
+
+                resultsContainer.classList.add('hidden');
+                checkBtn.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        /* Flashcard Logic */
+        const vocabData = [
+            { word: "battleground", trans: "戰場", eng: "The field became a battleground.", chi: "這片田野成了戰場。", emoji: "⚔️" },
+            { word: "buzzing", trans: "嗡嗡作響", eng: "The bees are buzzing loudly.", chi: "蜜蜂在大聲地嗡嗡作響。", emoji: "🐝" },
+            { word: "feud", trans: "宿怨 / 不和", eng: "The two families had a long feud.", chi: "這兩個家族有長期的宿怨。", emoji: "💢" },
+            { word: "fit", trans: "適合", eng: "These shoes fit me perfectly.", chi: "這雙鞋非常適合我。", emoji: "👟" },
+            { word: "funky", trans: "時髦的 / 奇特的", eng: "He wears funky clothes to school.", chi: "他穿著奇特的衣服去學校。", emoji: "🕶️" },
+            { word: "gasped", trans: "倒抽一口氣", eng: "She gasped in surprise.", chi: "她驚訝地倒抽了一口氣。", emoji: "😲" },
+            { word: "odd", trans: "奇怪的", eng: "That is an odd color for a car.", chi: "對於車子來說，那是一個奇怪的顏色。", emoji: "🤨" },
+            { word: "recognize", trans: "認出", eng: "I didn't recognize you!", chi: "我沒有認出你！", emoji: "💡" },
+            { word: "strokes", trans: "撫摸", eng: "He gently strokes the cat.", chi: "他輕輕撫摸那隻貓。", emoji: "🐈" },
+            { word: "tumbling", trans: "翻滾", eng: "The rocks came tumbling down.", chi: "石頭翻滾了下來。", emoji: "🪨" },
+            { word: "wisps", trans: "一縷縷", eng: "Wisps of smoke rose in the air.", chi: "一縷縷煙在空中升起。", emoji: "💨" },
+            { word: "ace", trans: "王牌 / 頂尖高手", eng: "He is an ace pilot.", chi: "他是一名頂尖飛行員。", emoji: "⭐" },
+            { word: "business", trans: "商業 / 生意", eng: "She owns a small business.", chi: "她擁有一家小企業。", emoji: "💼" },
+            { word: "confidently", trans: "自信地", eng: "She answered the question confidently.", chi: "她自信地回答了問題。", emoji: "😎" },
+            { word: "eagerly", trans: "渴望地 / 熱切地", eng: "The children eagerly waited for the presents.", chi: "孩子們熱切地等待著禮物。", emoji: "🤩" },
+            { word: "located", trans: "位於", eng: "The shop is located near the park.", chi: "這家店位於公園附近。", emoji: "📍" },
+            { word: "mossy", trans: "長滿苔蘚的", eng: "We sat on a mossy rock.", chi: "我們坐在長滿苔蘚的石頭上。", emoji: "🌿" },
+            { word: "mystery", trans: "謎 / 神秘的事物", eng: "The missing book is a mystery.", chi: "失蹤的書是個謎。", emoji: "❓" },
+            { word: "outstretched", trans: "伸展的", eng: "He welcomed us with outstretched arms.", chi: "他張開雙臂歡迎我們。", emoji: "👐" },
+            { word: "pavement", trans: "人行道 / 鋪砌的路面", eng: "They walked along the pavement.", chi: "他們沿著人行道走。", emoji: "🛣️" },
+            { word: "scoop", trans: "一勺 / 舀", eng: "I would like a scoop of ice cream.", chi: "我想要一勺冰淇淋。", emoji: "🍨" },
+            { word: "seeps", trans: "滲透 / 漏出", eng: "Water seeps through the roof.", chi: "水從屋頂滲漏進來。", emoji: "💧" },
+            { word: "underside", trans: "底部 / 下面", eng: "Look at the underside of the leaf.", chi: "看看葉子的底部。", emoji: "⬇️" }
+        ];
+
+        let currentCardIndex = 0;
+        const flashcardElement = document.getElementById('flashcard');
+
+        function updateCardDisplay() {
+            const data = vocabData[currentCardIndex];
+            document.getElementById('front-word').textContent = data.word;
+            document.getElementById('back-translation').textContent = data.trans;
+            document.getElementById('back-eng').textContent = data.word + " -> " + data.eng; // show word in context
+            document.getElementById('back-eng').innerHTML = `<span style="color:white;">${data.word}</span> <br> ${data.eng}`;
+            document.getElementById('back-chi').textContent = data.chi;
+            document.getElementById('card-emoji').textContent = data.emoji;
+            
+            document.getElementById('card-counter').textContent = `Card ${currentCardIndex + 1} of ${vocabData.length} (Click card to flip)`;
+
+            document.getElementById('prev-btn').disabled = currentCardIndex === 0;
+            document.getElementById('next-btn').disabled = currentCardIndex === vocabData.length - 1;
+        }
+
+        function flipCard() {
+            flashcardElement.classList.toggle('is-flipped');
+        }
+
+        function changeCard(direction) {
+            // Unflip before changing if flipped
+            if (flashcardElement.classList.contains('is-flipped')) {
+                flashcardElement.classList.remove('is-flipped');
+                setTimeout(() => {
+                    currentCardIndex += direction;
+                    updateCardDisplay();
+                }, 300); // wait for flip animation
+            } else {
+                currentCardIndex += direction;
+                updateCardDisplay();
+            }
+        }
+
+        // Initialize flashcard
+        updateCardDisplay();
+    </script>
+</body>
+</html>
