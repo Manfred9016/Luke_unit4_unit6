@@ -103,9 +103,9 @@
             margin: 20px 0;
             display: inline-block;
             background: #f0f4c3;
-            width: 150px;
-            height: 150px;
-            line-height: 150px;
+            width: 250px;
+            height: 250px;
+            line-height: 250px;
             border-radius: 50%;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
         }
@@ -253,7 +253,10 @@
         <h2>Vocabulary Carousel</h2>
         <div class="carousel-controls">
             <button class="action-btn" onclick="prevSlide()">◀</button>
-            <img id="carousel-img" class="picture-display" src="" alt="Vocabulary Image">
+            <div id="carousel-media-container">
+                <img id="carousel-img" class="picture-display" src="" alt="Vocabulary Image">
+                <div id="carousel-emoji" class="emoji-display" style="display:none;"></div>
+            </div>
             <button class="action-btn" onclick="nextSlide()">▶</button>
         </div>
         <div id="carousel-word" class="text-display" style="font-weight: bold;">Word</div>
@@ -263,6 +266,7 @@
     <div id="spelling" class="game-container">
         <h2>What is this?</h2>
         <img id="spell-img" class="picture-display" src="" alt="Spell this">
+        <div id="spell-emoji" class="emoji-display" style="display:none;"></div>
         <br>
         <input type="text" id="spell-input" placeholder="Type the word here" autocomplete="off" autocorrect="off" autocapitalize="none">
         <br>
@@ -280,6 +284,7 @@
     <div id="picMatch" class="game-container">
         <h2>Match the Picture</h2>
         <img id="picMatch-img" class="picture-display" src="" alt="Vocabulary Image">
+        <div id="picMatch-emoji" class="emoji-display" style="display:none;"></div>
         <div id="picMatch-choices" class="choices-grid"></div>
     </div>
 
@@ -294,59 +299,58 @@
     <div id="feedback">Great job! 🌟</div>
 
     <script>
-        // Integrated Vocabulary Data with Image Placeholders
         const vocabData = [
-            // Module 1 Week 2 - Spelling
-            { word: "rest", trans: "休息", eng: "I need to take a rest.", chi: "我需要休息一下。", imgUrl: "images_23\\rest.jpg" },
-            { word: "melt", trans: "融化", eng: "The ice cream will melt.", chi: "冰淇淋會融化。", imgUrl: "images_23\\melt.jpg" },
-            { word: "job", trans: "工作", eng: "He found a new job.", chi: "他找到了一份新工作。", imgUrl: "images_23\\job.jpg" },
-            { word: "dot", trans: "點", eng: "Draw a dot on the paper.", chi: "在紙上畫一個點。", imgUrl: "images_23\\dot.jpg" },
-            { word: "plum", trans: "李子", eng: "I ate a sweet plum.", chi: "我吃了一顆甜李子。", imgUrl: "images_23\\plum.jpg" },
-            { word: "shut", trans: "關閉", eng: "Please shut the door.", chi: "請關門。", imgUrl: "images_23\\shut.jpg" },
-            { word: "puddle", trans: "水坑", eng: "He jumped into the puddle.", chi: "他跳進了水坑。", imgUrl: "images_23\\puddle.jpg" },
-            { word: "helmet", trans: "安全帽", eng: "Wear a helmet when riding.", chi: "騎車時要戴安全帽。", imgUrl: "images_23\\helmet.jpg" },
+            // Module 1 Week 2 - Spelling (Using Emojis)
+            { word: "rest", trans: "休息", eng: "I need to take a rest.", chi: "我需要休息一下。", emoji: "🛌" },
+            { word: "melt", trans: "融化", eng: "The ice cream will melt.", chi: "冰淇淋會融化。", emoji: "🫠" },
+            { word: "job", trans: "工作", eng: "He found a new job.", chi: "他找到了一份新工作。", emoji: "💼" },
+            { word: "dot", trans: "點", eng: "Draw a dot on the paper.", chi: "在紙上畫一個點。", emoji: "🔴" },
+            { word: "plum", trans: "李子", eng: "I ate a sweet plum.", chi: "我吃了一顆甜李子。", emoji: "🍑" }, 
+            { word: "shut", trans: "關閉", eng: "Please shut the door.", chi: "請關門。", emoji: "🚪" },
+            { word: "puddle", trans: "水坑", eng: "He jumped into the puddle.", chi: "他跳進了水坑。", emoji: "💦" },
+            { word: "helmet", trans: "安全帽", eng: "Wear a helmet when riding.", chi: "騎車時要戴安全帽。", emoji: "🪖" },
 
-            // Module 1 Week 2 - Vocabulary
-            { word: "cautiously", trans: "小心地", eng: "She walked cautiously.", chi: "她小心翼翼地走。", imgUrl: "images_23\\cautiously.jpg" },
-            { word: "compliment", trans: "讚美", eng: "He gave her a compliment.", chi: "他讚美了她。", imgUrl: "images_23\\compliment.jpg" }, // Used provided source filename here
-            { word: "discuss", trans: "討論", eng: "Let's discuss the plan.", chi: "我們來討論這個計畫。", imgUrl: "images_23\\discuss.jpg" },
-            { word: "elected", trans: "選舉", eng: "She was elected as leader.", chi: "她被選為領導人。", imgUrl: "images_23\\elected.jpg" },
-            { word: "jammed", trans: "卡住 / 塞滿", eng: "The door is jammed.", chi: "門卡住了。", imgUrl: "images_23\\jammed.jpg" },
-            { word: "local", trans: "當地的", eng: "We visited a local shop.", chi: "我們去了一家當地商店。", imgUrl: "images_23\\local.jpg" },
-            { word: "mock", trans: "模擬 / 嘲笑", eng: "This is a mock election. / Do not mock others.", chi: "這是一場模擬選舉。", imgUrl: "images_23\\mock.jpg" },
-            { word: "panicked", trans: "驚慌", eng: "The bird panicked and flew away.", chi: "鳥兒驚慌地飛走了。", imgUrl: "images_23\\panicked.jpg" },
-            { word: "prohibited", trans: "禁止", eng: "Smoking is prohibited here.", chi: "這裡禁止吸煙。", imgUrl: "images_23\\prohibited.jpg" },
-            { word: "ridiculous", trans: "荒謬的", eng: "That is a ridiculous idea.", chi: "那是一個荒謬的想法。", imgUrl: "images_23\\ridiculous.jpg" },
-            { word: "scribbled", trans: "塗鴉 / 亂寫", eng: "He scribbled on the paper.", chi: "他在紙上亂寫。", imgUrl: "images_23\\scribbled.jpg" },
-            { word: "smirked", trans: "假笑 / 得意地笑", eng: "He smirked at the joke.", chi: "他聽到笑話後得意地笑了。", imgUrl: "images_23\\smirked.jpg" },
-            { word: "tryouts", trans: "選拔賽", eng: "I am going to baseball tryouts.", chi: "我要去參加棒球選拔賽。", imgUrl: "images_23\\tryouts.jpg" },
-            { word: "wistfully", trans: "渴望地 / 留戀地", eng: "She looked wistfully out the window.", chi: "她若有所思地望著窗外。", imgUrl: "images_23\\wistfully.jpg" },
+            // Module 1 Week 2 - Vocabulary (Using original images)
+            { word: "cautiously", trans: "小心地", eng: "She walked cautiously.", chi: "她小心翼翼地走。", imgUrl: "images_23//cautiously.jpg" },
+            { word: "compliment", trans: "讚美", eng: "He gave her a compliment.", chi: "他讚美了她。", imgUrl: "images_23//compliment.jpg" },
+            { word: "discuss", trans: "討論", eng: "Let's discuss the plan.", chi: "我們來討論這個計畫。", imgUrl: "images_23//discuss.jpg" },
+            { word: "elected", trans: "選舉", eng: "She was elected as leader.", chi: "她被選為領導人。", imgUrl: "images_23//elected.jpg" },
+            { word: "jammed", trans: "卡住 / 塞滿", eng: "The door is jammed.", chi: "門卡住了。", imgUrl: "images_23//jammed.jpg" },
+            { word: "local", trans: "當地的", eng: "We visited a local shop.", chi: "我們去了一家當地商店。", imgUrl: "images_23//local.jpg" },
+            { word: "mock", trans: "模擬 / 嘲笑", eng: "This is a mock election. / Do not mock others.", chi: "這是一場模擬選舉。", imgUrl: "images_23//mock.jpg" },
+            { word: "panicked", trans: "驚慌", eng: "The bird panicked and flew away.", chi: "鳥兒驚慌地飛走了。", imgUrl: "images_23//panicked.jpg" },
+            { word: "prohibited", trans: "禁止", eng: "Smoking is prohibited here.", chi: "這裡禁止吸煙。", imgUrl: "images_23//prohibited.jpg" },
+            { word: "ridiculous", trans: "荒謬的", eng: "That is a ridiculous idea.", chi: "那是一個荒謬的想法。", imgUrl: "images_23//ridiculous.jpg" },
+            { word: "scribbled", trans: "塗鴉 / 亂寫", eng: "He scribbled on the paper.", chi: "他在紙上亂寫。", imgUrl: "images_23//scribbled.jpg" },
+            { word: "smirked", trans: "假笑 / 得意地笑", eng: "He smirked at the joke.", chi: "他聽到笑話後得意地笑了。", imgUrl: "images_23//smirked.jpg" },
+            { word: "tryouts", trans: "選拔賽", eng: "I am going to baseball tryouts.", chi: "我要去參加棒球選拔賽。", imgUrl: "images_23//tryouts.jpg" },
+            { word: "wistfully", trans: "渴望地 / 留戀地", eng: "She looked wistfully out the window.", chi: "她若有所思地望著窗外。", imgUrl: "images_23//wistfully.jpg" },
 
-            // Module 1 Week 3 - Spelling
-            { word: "ate", trans: "吃 (過去式)", eng: "I ate dinner early.", chi: "我很早就吃過晚餐了。", imgUrl: "images_23\\ate.jpg" },
-            { word: "race", trans: "比賽", eng: "We ran a race.", chi: "我們進行了一場賽跑。", imgUrl: "images_23\\race.jpg" },
-            { word: "grape", trans: "葡萄", eng: "This grape is sour.", chi: "這顆葡萄很酸。", imgUrl: "images_23\\grape.jpg" },
-            { word: "mine", trans: "我的", eng: "That book is mine.", chi: "那本書是我的。", imgUrl: "images_23\\mine.jpg" },
-            { word: "prize", trans: "獎品", eng: "She won first prize.", chi: "她贏得了一等獎。", imgUrl: "images_23\\prize.jpg" },
-            { word: "pile", trans: "堆", eng: "There is a pile of dirt.", chi: "那裡有一堆泥土。", imgUrl: "images_23\\pile.jpg" },
-            { word: "mistake", trans: "錯誤", eng: "I made a mistake.", chi: "我犯了一個錯。", imgUrl: "images_23\\mistake.jpg" },
-            { word: "guide", trans: "引導 / 指南", eng: "The guide helped us.", chi: "導遊幫助了我們。", imgUrl: "images_23\\guide.jpg" },
+            // Module 1 Week 3 - Spelling (Using Emojis)
+            { word: "ate", trans: "吃 (過去式)", eng: "I ate dinner early.", chi: "我很早就吃過晚餐了。", emoji: "🍽️" },
+            { word: "race", trans: "比賽", eng: "We ran a race.", chi: "我們進行了一場賽跑。", emoji: "🏁" },
+            { word: "grape", trans: "葡萄", eng: "This grape is sour.", chi: "這顆葡萄很酸。", emoji: "🍇" },
+            { word: "mine", trans: "我的", eng: "That book is mine.", chi: "那本書是我的。", emoji: "🙋‍♂️" },
+            { word: "prize", trans: "獎品", eng: "She won first prize.", chi: "她贏得了一等獎。", emoji: "🏆" },
+            { word: "pile", trans: "堆", eng: "There is a pile of dirt.", chi: "那裡有一堆泥土。", emoji: "⛰️" },
+            { word: "mistake", trans: "錯誤", eng: "I made a mistake.", chi: "我犯了一個錯。", emoji: "❌" },
+            { word: "guide", trans: "引導 / 指南", eng: "The guide helped us.", chi: "導遊幫助了我們。", emoji: "🧭" },
 
-            // Module 1 Week 3 - Vocabulary
-            { word: "disaster", trans: "災難", eng: "The storm was a disaster.", chi: "那場風暴是一場災難。", imgUrl: "images_23\\disaster.jpg" },
-            { word: "fiddled", trans: "擺弄", eng: "He fiddled with his keys.", chi: "他擺弄著他的鑰匙。", imgUrl: "images_23\\fiddled.jpg" },
-            { word: "hamper", trans: "阻礙", eng: "Rain will hamper our progress.", chi: "下雨會阻礙我們的進度。", imgUrl: "images_23\\hamper.jpg" },
-            { word: "jubilantly", trans: "歡騰地", eng: "They cheered jubilantly.", chi: "他們歡呼雀躍。", imgUrl: "images_23\\jubilantly.jpg" },
-            { word: "mechanical", trans: "機械的", eng: "It is a mechanical toy.", chi: "這是一個機械玩具。", imgUrl: "images_23\\mechanical.jpg" },
-            { word: "mood", trans: "心情", eng: "I am in a good mood.", chi: "我心情很好。", imgUrl: "images_23\\mood.jpg" },
-            { word: "obnoxious", trans: "令人討厭的", eng: "That sound is obnoxious.", chi: "那個聲音很討厭。", imgUrl: "images_23\\obnoxious.jpg" },
-            { word: "perfect", trans: "完美的", eng: "It is a perfect day.", chi: "這是完美的一天。", imgUrl: "images_23\\perfect.jpg" },
-            { word: "planned", trans: "計畫", eng: "We planned a trip.", chi: "我們計畫了一次旅行。", imgUrl: "images_23\\planned.jpg" },
-            { word: "praise", trans: "讚揚", eng: "The teacher gave them praise.", chi: "老師讚揚了他們。", imgUrl: "images_23\\praise.jpg" },
-            { word: "queasy", trans: "反胃的", eng: "The boat ride made me queasy.", chi: "坐船讓我感到反胃。", imgUrl: "images_23\\queasy.jpg" },
-            { word: "reassemble", trans: "重新組裝", eng: "We need to reassemble the machine.", chi: "我們需要重新組裝這台機器。", imgUrl: "images_23\\reassemble.jpg" },
-            { word: "scowl", trans: "皺眉 / 怒容", eng: "He had a deep scowl.", chi: "他眉頭深鎖。", imgUrl: "images_23\\scowl.jpg" },
-            { word: "tinkering", trans: "修補 / 擺弄", eng: "He is tinkering with the radio.", chi: "他正在修補收音機。", imgUrl: "images_23\\tinkering.jpg" }
+            // Module 1 Week 3 - Vocabulary (Using original images)
+            { word: "disaster", trans: "災難", eng: "The storm was a disaster.", chi: "那場風暴是一場災難。", imgUrl: "images_23//disaster.jpg" },
+            { word: "fiddled", trans: "擺弄", eng: "He fiddled with his keys.", chi: "他擺弄著他的鑰匙。", imgUrl: "images_23//fiddled.jpg" },
+            { word: "hamper", trans: "阻礙", eng: "Rain will hamper our progress.", chi: "下雨會阻礙我們的進度。", imgUrl: "images_23//hamper.jpg" },
+            { word: "jubilantly", trans: "歡騰地", eng: "They cheered jubilantly.", chi: "他們歡呼雀躍。", imgUrl: "images_23//jubilantly.jpg" },
+            { word: "mechanical", trans: "機械的", eng: "It is a mechanical toy.", chi: "這是一個機械玩具。", imgUrl: "images_23//mechanical.jpg" },
+            { word: "mood", trans: "心情", eng: "I am in a good mood.", chi: "我心情很好。", imgUrl: "images_23//mood.jpg" },
+            { word: "obnoxious", trans: "令人討厭的", eng: "That sound is obnoxious.", chi: "那個聲音很討厭。", imgUrl: "images_23//obnoxious.jpg" },
+            { word: "perfect", trans: "完美的", eng: "It is a perfect day.", chi: "這是完美的一天。", imgUrl: "images_23//perfect.jpg" },
+            { word: "planned", trans: "計畫", eng: "We planned a trip.", chi: "我們計畫了一次旅行。", imgUrl: "images_23//planned.jpg" },
+            { word: "praise", trans: "讚揚", eng: "The teacher gave them praise.", chi: "老師讚揚了他們。", imgUrl: "images_23//praised.jpg" },
+            { word: "queasy", trans: "反胃的", eng: "The boat ride made me queasy.", chi: "坐船讓我感到反胃。", imgUrl: "images_23//queasy.jpg" },
+            { word: "reassemble", trans: "重新組裝", eng: "We need to reassemble the machine.", chi: "我們需要重新組裝這台機器。", imgUrl: "images_23//reassemble.jpg" },
+            { word: "scowl", trans: "皺眉 / 怒容", eng: "He had a deep scowl.", chi: "他眉頭深鎖。", imgUrl: "images_23//scowl.jpg" },
+            { word: "tinkering", trans: "修補 / 擺弄", eng: "He is tinkering with the radio.", chi: "他正在修補收音機。", imgUrl: "images_23//tinkering.jpg" }
         ];
 
         let currentWordObj = null;
@@ -397,6 +401,23 @@
             if (tabId === 'meanMatch') initMeanMatch();
         }
 
+        // Helper function to handle media display toggling
+        function updateMediaDisplay(imgId, emojiId, wordObj) {
+            const imgEl = document.getElementById(imgId);
+            const emojiEl = document.getElementById(emojiId);
+            
+            if (wordObj.emoji) {
+                imgEl.style.display = 'none';
+                emojiEl.style.display = 'inline-block';
+                emojiEl.textContent = wordObj.emoji;
+            } else {
+                emojiEl.style.display = 'none';
+                imgEl.style.display = 'inline-block';
+                imgEl.src = wordObj.imgUrl;
+                imgEl.alt = wordObj.word;
+            }
+        }
+
         /* Game 0: Carousel Logic */
         function initCarousel() {
             showSlide(currentSlide);
@@ -407,9 +428,7 @@
             if (index < 0) currentSlide = vocabData.length - 1;
             const currentWord = vocabData[currentSlide];
             
-            // Sets the placeholder URL or falls back to standard text formatting
-            document.getElementById('carousel-img').src = currentWord.imgUrl;
-            document.getElementById('carousel-img').alt = currentWord.word;
+            updateMediaDisplay('carousel-img', 'carousel-emoji', currentWord);
             document.getElementById('carousel-word').textContent = currentWord.word;
         }
 
@@ -426,8 +445,7 @@
         /* Game 1: Spelling */
         function initSpelling() {
             currentWordObj = getRandomWord();
-            document.getElementById('spell-img').src = currentWordObj.imgUrl;
-            document.getElementById('spell-img').alt = "Vocabulary Image";
+            updateMediaDisplay('spell-img', 'spell-emoji', currentWordObj);
             document.getElementById('spell-input').value = "";
             document.getElementById('spell-input').focus();
         }
@@ -476,8 +494,7 @@
         /* Game 3: Picture Match */
         function initPicMatch() {
             currentWordObj = getRandomWord();
-            document.getElementById('picMatch-img').src = currentWordObj.imgUrl;
-            document.getElementById('picMatch-img').alt = currentWordObj.word;
+            updateMediaDisplay('picMatch-img', 'picMatch-emoji', currentWordObj);
 
             const choices = getMultipleChoices(currentWordObj.word);
             const container = document.getElementById('picMatch-choices');
