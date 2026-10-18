@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Adventure</title>
+    <style>
+        :root {
+            --bg-color: #e0f7fa;
+            --primary: #4fc3f7;
+            --secondary: #ffb74d;
+            --success: #81c784;
+            --danger: #e57373;
+            --text-dark: #37474f;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #0277bd;
+            font-size: 2.5rem;
+            text-align: center;
+            text-shadow: 2px 2px 0px #fff;
+            margin-bottom: 20px;
+        }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .nav-btn {
+            background-color: var(--primary);
+            color: var(--white);
+            border: 4px solid #0288d1;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #0288d1;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #0288d1;
+        }
+
+        .nav-btn.active {
+            background-color: var(--secondary);
+            border-color: #f57c00;
+            box-shadow: 0 4px 0 #f57c00;
+        }
+
+        /* Game Containers */
+        .game-container {
+            display: none; 
+            background-color: var(--white);
+            border-radius: 30px;
+            padding: 40px 20px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 5px dashed var(--primary);
+            animation: popIn 0.5s ease-out;
+        }
+
+        .game-container.active {
+            display: block;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Common Elements */
+        .emoji-display {
+            font-size: 6rem;
+            margin: 20px 0;
+            display: inline-block;
+            background: #f0f4c3;
+            width: 150px;
+            height: 150px;
+            line-height: 150px;
+            border-radius: 50%;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .picture-display {
+            width: 250px;
+            height: 250px;
+            margin: 20px 0;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 5px solid #f0f4c3;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: inline-block;
+            background-color: #fff;
+        }
+
+        .text-display {
+            font-size: 2rem;
+            margin: 20px 0;
+            color: #4a148c;
+            padding: 20px;
+            background: #f3e5f5;
+            border-radius: 15px;
+        }
+
+        /* Inputs & Buttons */
+        input[type="text"] {
+            font-size: 2rem;
+            padding: 10px;
+            border: 4px solid var(--primary);
+            border-radius: 15px;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+        
+        input[type="text"]:focus {
+            border-color: var(--secondary);
+        }
+
+        .action-btn {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #388e3c;
+            transition: all 0.1s;
+            margin: 0 10px;
+        }
+
+        .action-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #388e3c;
+        }
+
+        .choices-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 500px) {
+            .choices-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .choice-btn {
+            background-color: #ce93d8;
+            color: white;
+            border: 3px solid #8e24aa;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #8e24aa;
+            transition: all 0.1s;
+        }
+
+        .choice-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 0 0 #8e24aa;
+        }
+        
+        .choice-btn:hover {
+            background-color: #ba68c8;
+        }
+
+        /* Carousel Specifics */
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Feedback Overlay */
+        #feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 30px;
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        #feedback.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .correct { color: #4caf50; border: 5px solid #4caf50; }
+        .incorrect { color: #f44336; border: 5px solid #f44336; }
+    </style>
+</head>
+<body>
+
+    <h1>🌟 Vocabulary Adventure 🌟</h1>
+
+    <div class="nav-menu">
+        <button class="nav-btn active" onclick="switchTab('carousel')">Picture Carousel</button>
+        <button class="nav-btn" onclick="switchTab('spelling')">Picture Spelling</button>
+        <button class="nav-btn" onclick="switchTab('blanks')">Fill in the Blanks</button>
+        <button class="nav-btn" onclick="switchTab('picMatch')">Picture Match</button>
+        <button class="nav-btn" onclick="switchTab('meanMatch')">Meaning Match</button>
+    </div>
+
+    <!-- Game 0: Picture Carousel -->
+    <div id="carousel" class="game-container active">
+        <h2>Vocabulary Carousel</h2>
+        <div class="carousel-controls">
+            <button class="action-btn" onclick="prevSlide()">◀</button>
+            <img id="carousel-img" class="picture-display" src="" alt="Vocabulary Image">
+            <button class="action-btn" onclick="nextSlide()">▶</button>
+        </div>
+        <div id="carousel-word" class="text-display" style="font-weight: bold;">Word</div>
+    </div>
+
+    <!-- Game 1: Picture Spelling -->
+    <div id="spelling" class="game-container">
+        <h2>What is this?</h2>
+        <img id="spell-img" class="picture-display" src="" alt="Spell this">
+        <br>
+        <input type="text" id="spell-input" placeholder="Type the word here" autocomplete="off" autocorrect="off" autocapitalize="none">
+        <br>
+        <button class="action-btn" onclick="checkSpelling()">Check!</button>
+    </div>
+
+    <!-- Game 2: Fill in the Blanks -->
+    <div id="blanks" class="game-container">
+        <h2>Complete the Sentence</h2>
+        <div id="blank-sentence" class="text-display">The sentence goes here.</div>
+        <div id="blank-choices" class="choices-grid"></div>
+    </div>
+
+    <!-- Game 3: Picture Match -->
+    <div id="picMatch" class="game-container">
+        <h2>Match the Picture</h2>
+        <img id="picMatch-img" class="picture-display" src="" alt="Vocabulary Image">
+        <div id="picMatch-choices" class="choices-grid"></div>
+    </div>
+
+    <!-- Game 4: Meaning Match -->
+    <div id="meanMatch" class="game-container">
+        <h2>Match the Meaning</h2>
+        <div id="meanMatch-text" class="text-display">Meaning Here</div>
+        <div id="meanMatch-choices" class="choices-grid"></div>
+    </div>
+
+    <!-- Global Feedback Popup -->
+    <div id="feedback">Great job! 🌟</div>
+
+    <script>
+        // Integrated Vocabulary Data with Image Placeholders
+        const vocabData = [
+            // Module 1 Week 2 - Spelling
+            { word: "rest", trans: "休息", eng: "I need to take a rest.", chi: "我需要休息一下。", imgUrl: "images_23\\rest.jpg" },
+            { word: "melt", trans: "融化", eng: "The ice cream will melt.", chi: "冰淇淋會融化。", imgUrl: "images_23\\melt.jpg" },
+            { word: "job", trans: "工作", eng: "He found a new job.", chi: "他找到了一份新工作。", imgUrl: "images_23\\job.jpg" },
+            { word: "dot", trans: "點", eng: "Draw a dot on the paper.", chi: "在紙上畫一個點。", imgUrl: "images_23\\dot.jpg" },
+            { word: "plum", trans: "李子", eng: "I ate a sweet plum.", chi: "我吃了一顆甜李子。", imgUrl: "images_23\\plum.jpg" },
+            { word: "shut", trans: "關閉", eng: "Please shut the door.", chi: "請關門。", imgUrl: "images_23\\shut.jpg" },
+            { word: "puddle", trans: "水坑", eng: "He jumped into the puddle.", chi: "他跳進了水坑。", imgUrl: "images_23\\puddle.jpg" },
+            { word: "helmet", trans: "安全帽", eng: "Wear a helmet when riding.", chi: "騎車時要戴安全帽。", imgUrl: "images_23\\helmet.jpg" },
+
+            // Module 1 Week 2 - Vocabulary
+            { word: "cautiously", trans: "小心地", eng: "She walked cautiously.", chi: "她小心翼翼地走。", imgUrl: "images_23\\cautiously.jpg" },
+            { word: "compliment", trans: "讚美", eng: "He gave her a compliment.", chi: "他讚美了她。", imgUrl: "images_23\\compliment.jpg" }, // Used provided source filename here
+            { word: "discuss", trans: "討論", eng: "Let's discuss the plan.", chi: "我們來討論這個計畫。", imgUrl: "images_23\\discuss.jpg" },
+            { word: "elected", trans: "選舉", eng: "She was elected as leader.", chi: "她被選為領導人。", imgUrl: "images_23\\elected.jpg" },
+            { word: "jammed", trans: "卡住 / 塞滿", eng: "The door is jammed.", chi: "門卡住了。", imgUrl: "images_23\\jammed.jpg" },
+            { word: "local", trans: "當地的", eng: "We visited a local shop.", chi: "我們去了一家當地商店。", imgUrl: "images_23\\local.jpg" },
+            { word: "mock", trans: "模擬 / 嘲笑", eng: "This is a mock election. / Do not mock others.", chi: "這是一場模擬選舉。", imgUrl: "images_23\\mock.jpg" },
+            { word: "panicked", trans: "驚慌", eng: "The bird panicked and flew away.", chi: "鳥兒驚慌地飛走了。", imgUrl: "images_23\\panicked.jpg" },
+            { word: "prohibited", trans: "禁止", eng: "Smoking is prohibited here.", chi: "這裡禁止吸煙。", imgUrl: "images_23\\prohibited.jpg" },
+            { word: "ridiculous", trans: "荒謬的", eng: "That is a ridiculous idea.", chi: "那是一個荒謬的想法。", imgUrl: "images_23\\ridiculous.jpg" },
+            { word: "scribbled", trans: "塗鴉 / 亂寫", eng: "He scribbled on the paper.", chi: "他在紙上亂寫。", imgUrl: "images_23\\scribbled.jpg" },
+            { word: "smirked", trans: "假笑 / 得意地笑", eng: "He smirked at the joke.", chi: "他聽到笑話後得意地笑了。", imgUrl: "images_23\\smirked.jpg" },
+            { word: "tryouts", trans: "選拔賽", eng: "I am going to baseball tryouts.", chi: "我要去參加棒球選拔賽。", imgUrl: "images_23\\tryouts.jpg" },
+            { word: "wistfully", trans: "渴望地 / 留戀地", eng: "She looked wistfully out the window.", chi: "她若有所思地望著窗外。", imgUrl: "images_23\\wistfully.jpg" },
+
+            // Module 1 Week 3 - Spelling
+            { word: "ate", trans: "吃 (過去式)", eng: "I ate dinner early.", chi: "我很早就吃過晚餐了。", imgUrl: "images_23\\ate.jpg" },
+            { word: "race", trans: "比賽", eng: "We ran a race.", chi: "我們進行了一場賽跑。", imgUrl: "images_23\\race.jpg" },
+            { word: "grape", trans: "葡萄", eng: "This grape is sour.", chi: "這顆葡萄很酸。", imgUrl: "images_23\\grape.jpg" },
+            { word: "mine", trans: "我的", eng: "That book is mine.", chi: "那本書是我的。", imgUrl: "images_23\\mine.jpg" },
+            { word: "prize", trans: "獎品", eng: "She won first prize.", chi: "她贏得了一等獎。", imgUrl: "images_23\\prize.jpg" },
+            { word: "pile", trans: "堆", eng: "There is a pile of dirt.", chi: "那裡有一堆泥土。", imgUrl: "images_23\\pile.jpg" },
+            { word: "mistake", trans: "錯誤", eng: "I made a mistake.", chi: "我犯了一個錯。", imgUrl: "images_23\\mistake.jpg" },
+            { word: "guide", trans: "引導 / 指南", eng: "The guide helped us.", chi: "導遊幫助了我們。", imgUrl: "images_23\\guide.jpg" },
+
+            // Module 1 Week 3 - Vocabulary
+            { word: "disaster", trans: "災難", eng: "The storm was a disaster.", chi: "那場風暴是一場災難。", imgUrl: "images_23\\disaster.jpg" },
+            { word: "fiddled", trans: "擺弄", eng: "He fiddled with his keys.", chi: "他擺弄著他的鑰匙。", imgUrl: "images_23\\fiddled.jpg" },
+            { word: "hamper", trans: "阻礙", eng: "Rain will hamper our progress.", chi: "下雨會阻礙我們的進度。", imgUrl: "images_23\\hamper.jpg" },
+            { word: "jubilantly", trans: "歡騰地", eng: "They cheered jubilantly.", chi: "他們歡呼雀躍。", imgUrl: "images_23\\jubilantly.jpg" },
+            { word: "mechanical", trans: "機械的", eng: "It is a mechanical toy.", chi: "這是一個機械玩具。", imgUrl: "images_23\\mechanical.jpg" },
+            { word: "mood", trans: "心情", eng: "I am in a good mood.", chi: "我心情很好。", imgUrl: "images_23\\mood.jpg" },
+            { word: "obnoxious", trans: "令人討厭的", eng: "That sound is obnoxious.", chi: "那個聲音很討厭。", imgUrl: "images_23\\obnoxious.jpg" },
+            { word: "perfect", trans: "完美的", eng: "It is a perfect day.", chi: "這是完美的一天。", imgUrl: "images_23\\perfect.jpg" },
+            { word: "planned", trans: "計畫", eng: "We planned a trip.", chi: "我們計畫了一次旅行。", imgUrl: "images_23\\planned.jpg" },
+            { word: "praise", trans: "讚揚", eng: "The teacher gave them praise.", chi: "老師讚揚了他們。", imgUrl: "images_23\\praise.jpg" },
+            { word: "queasy", trans: "反胃的", eng: "The boat ride made me queasy.", chi: "坐船讓我感到反胃。", imgUrl: "images_23\\queasy.jpg" },
+            { word: "reassemble", trans: "重新組裝", eng: "We need to reassemble the machine.", chi: "我們需要重新組裝這台機器。", imgUrl: "images_23\\reassemble.jpg" },
+            { word: "scowl", trans: "皺眉 / 怒容", eng: "He had a deep scowl.", chi: "他眉頭深鎖。", imgUrl: "images_23\\scowl.jpg" },
+            { word: "tinkering", trans: "修補 / 擺弄", eng: "He is tinkering with the radio.", chi: "他正在修補收音機。", imgUrl: "images_23\\tinkering.jpg" }
+        ];
+
+        let currentWordObj = null;
+        let currentSlide = 0;
+
+        function getRandomWord() {
+            return vocabData[Math.floor(Math.random() * vocabData.length)];
+        }
+
+        function getMultipleChoices(correctWord) {
+            let choices = [correctWord];
+            while (choices.length < 4) {
+                let randomItem = getRandomWord().word;
+                if (!choices.includes(randomItem)) {
+                    choices.push(randomItem);
+                }
+            }
+            return choices.sort(() => Math.random() - 0.5);
+        }
+
+        function showFeedback(isCorrect, callback) {
+            const fb = document.getElementById('feedback');
+            if (isCorrect) {
+                fb.textContent = "Great job! 🌟";
+                fb.className = "correct show";
+            } else {
+                fb.textContent = "Try again! 💫";
+                fb.className = "incorrect show";
+            }
+            
+            setTimeout(() => {
+                fb.className = "";
+                if (isCorrect && callback) callback();
+            }, 1200);
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.game-container').forEach(container => container.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            if (tabId === 'carousel') initCarousel();
+            if (tabId === 'spelling') initSpelling();
+            if (tabId === 'blanks') initBlanks();
+            if (tabId === 'picMatch') initPicMatch();
+            if (tabId === 'meanMatch') initMeanMatch();
+        }
+
+        /* Game 0: Carousel Logic */
+        function initCarousel() {
+            showSlide(currentSlide);
+        }
+
+        function showSlide(index) {
+            if (index >= vocabData.length) currentSlide = 0;
+            if (index < 0) currentSlide = vocabData.length - 1;
+            const currentWord = vocabData[currentSlide];
+            
+            // Sets the placeholder URL or falls back to standard text formatting
+            document.getElementById('carousel-img').src = currentWord.imgUrl;
+            document.getElementById('carousel-img').alt = currentWord.word;
+            document.getElementById('carousel-word').textContent = currentWord.word;
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        /* Game 1: Spelling */
+        function initSpelling() {
+            currentWordObj = getRandomWord();
+            document.getElementById('spell-img').src = currentWordObj.imgUrl;
+            document.getElementById('spell-img').alt = "Vocabulary Image";
+            document.getElementById('spell-input').value = "";
+            document.getElementById('spell-input').focus();
+        }
+
+        function checkSpelling() {
+            const input = document.getElementById('spell-input').value.trim().toLowerCase();
+            if (input === currentWordObj.word.toLowerCase()) {
+                showFeedback(true, initSpelling);
+            } else {
+                showFeedback(false);
+            }
+        }
+
+        document.getElementById('spell-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') checkSpelling();
+        });
+
+        /* Game 2: Blanks */
+        function initBlanks() {
+            currentWordObj = getRandomWord();
+            const regex = new RegExp(`\\b${currentWordObj.word}\\b`, 'gi');
+            let blankSentence = currentWordObj.eng.replace(regex, "______");
+            
+            if (blankSentence === currentWordObj.eng) {
+                blankSentence = currentWordObj.eng.replace(currentWordObj.word, "______");
+            }
+            
+            document.getElementById('blank-sentence').textContent = blankSentence;
+
+            const choices = getMultipleChoices(currentWordObj.word);
+            const container = document.getElementById('blank-choices');
+            container.innerHTML = ""; 
+            
+            choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = "choice-btn";
+                btn.textContent = choice;
+                btn.onclick = () => {
+                    if (choice === currentWordObj.word) showFeedback(true, initBlanks);
+                    else showFeedback(false);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        /* Game 3: Picture Match */
+        function initPicMatch() {
+            currentWordObj = getRandomWord();
+            document.getElementById('picMatch-img').src = currentWordObj.imgUrl;
+            document.getElementById('picMatch-img').alt = currentWordObj.word;
+
+            const choices = getMultipleChoices(currentWordObj.word);
+            const container = document.getElementById('picMatch-choices');
+            container.innerHTML = ""; 
+            
+            choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = "choice-btn";
+                btn.textContent = choice;
+                btn.onclick = () => {
+                    if (choice === currentWordObj.word) showFeedback(true, initPicMatch);
+                    else showFeedback(false);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        /* Game 4: Meaning Match */
+        function initMeanMatch() {
+            currentWordObj = getRandomWord();
+            document.getElementById('meanMatch-text').innerHTML = `${currentWordObj.trans}<br><small style="font-size:0.6em; color:#888;">${currentWordObj.chi}</small>`;
+
+            const choices = getMultipleChoices(currentWordObj.word);
+            const container = document.getElementById('meanMatch-choices');
+            container.innerHTML = ""; 
+            
+            choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = "choice-btn";
+                btn.textContent = choice;
+                btn.onclick = () => {
+                    if (choice === currentWordObj.word) showFeedback(true, initMeanMatch);
+                    else showFeedback(false);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        window.onload = function() {
+            initCarousel();
+        };
+    </script>
+</body>
+</html>
