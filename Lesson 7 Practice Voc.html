@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vocabulary Adventure</title>
+    <title>Vocabulary Adventure - Lesson 7</title>
     <style>
         :root {
             --bg-color: #e0f7fa;
@@ -47,7 +47,7 @@
             gap: 10px;
             margin-bottom: 30px;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
         }
 
         .nav-btn {
@@ -76,7 +76,7 @@
 
         /* Game Containers */
         .game-container {
-            display: none; /* Hidden by default */
+            display: none; 
             background-color: var(--white);
             border-radius: 30px;
             padding: 40px 20px;
@@ -103,11 +103,23 @@
             margin: 20px 0;
             display: inline-block;
             background: #f0f4c3;
-            width: 150px;
-            height: 150px;
-            line-height: 150px;
+            width: 250px;
+            height: 250px;
+            line-height: 250px;
             border-radius: 50%;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .picture-display {
+            width: 250px;
+            height: 250px;
+            margin: 20px 0;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 5px solid #f0f4c3;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: inline-block;
+            background-color: #fff;
         }
 
         .text-display {
@@ -147,6 +159,7 @@
             cursor: pointer;
             box-shadow: 0 6px 0 #388e3c;
             transition: all 0.1s;
+            margin: 0 10px;
         }
 
         .action-btn:active {
@@ -189,6 +202,14 @@
             background-color: #ba68c8;
         }
 
+        /* Carousel Specifics */
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
         /* Feedback Overlay */
         #feedback {
             position: fixed;
@@ -220,16 +241,32 @@
     <h1>🌟 Vocabulary Adventure 🌟</h1>
 
     <div class="nav-menu">
-        <button class="nav-btn active" onclick="switchTab('spelling')">Picture Spelling</button>
+        <button class="nav-btn active" onclick="switchTab('carousel')">Picture Carousel</button>
+        <button class="nav-btn" onclick="switchTab('spelling')">Picture Spelling</button>
         <button class="nav-btn" onclick="switchTab('blanks')">Fill in the Blanks</button>
         <button class="nav-btn" onclick="switchTab('picMatch')">Picture Match</button>
         <button class="nav-btn" onclick="switchTab('meanMatch')">Meaning Match</button>
     </div>
 
+    <!-- Game 0: Picture Carousel -->
+    <div id="carousel" class="game-container active">
+        <h2>Vocabulary Carousel</h2>
+        <div class="carousel-controls">
+            <button class="action-btn" onclick="prevSlide()">◀</button>
+            <div id="carousel-media-container">
+                <img id="carousel-img" class="picture-display" src="" alt="Vocabulary Image">
+                <div id="carousel-emoji" class="emoji-display" style="display:none;"></div>
+            </div>
+            <button class="action-btn" onclick="nextSlide()">▶</button>
+        </div>
+        <div id="carousel-word" class="text-display" style="font-weight: bold;">Word</div>
+    </div>
+
     <!-- Game 1: Picture Spelling -->
-    <div id="spelling" class="game-container active">
+    <div id="spelling" class="game-container">
         <h2>What is this?</h2>
-        <div id="spell-emoji" class="emoji-display">❓</div>
+        <img id="spell-img" class="picture-display" src="" alt="Spell this">
+        <div id="spell-emoji" class="emoji-display" style="display:none;"></div>
         <br>
         <input type="text" id="spell-input" placeholder="Type the word here" autocomplete="off" autocorrect="off" autocapitalize="none">
         <br>
@@ -240,27 +277,22 @@
     <div id="blanks" class="game-container">
         <h2>Complete the Sentence</h2>
         <div id="blank-sentence" class="text-display">The sentence goes here.</div>
-        <div id="blank-choices" class="choices-grid">
-            <!-- Buttons injected by JS -->
-        </div>
+        <div id="blank-choices" class="choices-grid"></div>
     </div>
 
     <!-- Game 3: Picture Match -->
     <div id="picMatch" class="game-container">
         <h2>Match the Picture</h2>
-        <div id="picMatch-emoji" class="emoji-display">❓</div>
-        <div id="picMatch-choices" class="choices-grid">
-            <!-- Buttons injected by JS -->
-        </div>
+        <img id="picMatch-img" class="picture-display" src="" alt="Vocabulary Image">
+        <div id="picMatch-emoji" class="emoji-display" style="display:none;"></div>
+        <div id="picMatch-choices" class="choices-grid"></div>
     </div>
 
     <!-- Game 4: Meaning Match -->
     <div id="meanMatch" class="game-container">
         <h2>Match the Meaning</h2>
-        <div id="meanMatch-text" class="text-display">Chinese Meaning Here</div>
-        <div id="meanMatch-choices" class="choices-grid">
-            <!-- Buttons injected by JS -->
-        </div>
+        <div id="meanMatch-text" class="text-display">Meaning Here</div>
+        <div id="meanMatch-choices" class="choices-grid"></div>
     </div>
 
     <!-- Global Feedback Popup -->
@@ -306,6 +338,7 @@
         ];
 
         let currentWordObj = null;
+        let currentSlide = 0;
 
         function getRandomWord() {
             return vocabData[Math.floor(Math.random() * vocabData.length)];
@@ -319,7 +352,7 @@
                     choices.push(randomItem);
                 }
             }
-            return choices.sort(() => Math.random() - 0.5); // Shuffle
+            return choices.sort(() => Math.random() - 0.5);
         }
 
         function showFeedback(isCorrect, callback) {
@@ -339,24 +372,64 @@
         }
 
         function switchTab(tabId) {
-            // Update buttons
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
 
-            // Update containers
             document.querySelectorAll('.game-container').forEach(container => container.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
 
-            // Initialize the game for the selected tab
+            if (tabId === 'carousel') initCarousel();
             if (tabId === 'spelling') initSpelling();
             if (tabId === 'blanks') initBlanks();
             if (tabId === 'picMatch') initPicMatch();
             if (tabId === 'meanMatch') initMeanMatch();
         }
 
+        // Helper function to handle media display toggling
+        function updateMediaDisplay(imgId, emojiId, wordObj) {
+            const imgEl = document.getElementById(imgId);
+            const emojiEl = document.getElementById(emojiId);
+            
+            if (wordObj.emoji) {
+                imgEl.style.display = 'none';
+                emojiEl.style.display = 'inline-block';
+                emojiEl.textContent = wordObj.emoji;
+            } else {
+                emojiEl.style.display = 'none';
+                imgEl.style.display = 'inline-block';
+                imgEl.src = wordObj.imgUrl;
+                imgEl.alt = wordObj.word;
+            }
+        }
+
+        /* Game 0: Carousel Logic */
+        function initCarousel() {
+            showSlide(currentSlide);
+        }
+
+        function showSlide(index) {
+            if (index >= vocabData.length) currentSlide = 0;
+            if (index < 0) currentSlide = vocabData.length - 1;
+            const currentWord = vocabData[currentSlide];
+            
+            updateMediaDisplay('carousel-img', 'carousel-emoji', currentWord);
+            document.getElementById('carousel-word').textContent = currentWord.word;
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        /* Game 1: Spelling */
         function initSpelling() {
             currentWordObj = getRandomWord();
-            document.getElementById('spell-emoji').textContent = currentWordObj.emoji;
+            updateMediaDisplay('spell-img', 'spell-emoji', currentWordObj);
             document.getElementById('spell-input').value = "";
             document.getElementById('spell-input').focus();
         }
@@ -370,20 +443,16 @@
             }
         }
 
-        // Allow pressing Enter to check spelling
         document.getElementById('spell-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                checkSpelling();
-            }
+            if (e.key === 'Enter') checkSpelling();
         });
 
+        /* Game 2: Blanks */
         function initBlanks() {
             currentWordObj = getRandomWord();
-            // Replace the word in the sentence (case insensitive) with a blank line
             const regex = new RegExp(`\\b${currentWordObj.word}\\b`, 'gi');
             let blankSentence = currentWordObj.eng.replace(regex, "______");
             
-            // Fallback just in case regex fails due to punctuation variations
             if (blankSentence === currentWordObj.eng) {
                 blankSentence = currentWordObj.eng.replace(currentWordObj.word, "______");
             }
@@ -392,28 +461,24 @@
 
             const choices = getMultipleChoices(currentWordObj.word);
             const container = document.getElementById('blank-choices');
-            container.innerHTML = ""; // Clear old buttons
+            container.innerHTML = ""; 
             
             choices.forEach(choice => {
                 const btn = document.createElement('button');
                 btn.className = "choice-btn";
                 btn.textContent = choice;
-                btn.onclick = () => checkBlankChoice(choice);
+                btn.onclick = () => {
+                    if (choice === currentWordObj.word) showFeedback(true, initBlanks);
+                    else showFeedback(false);
+                };
                 container.appendChild(btn);
             });
         }
 
-        function checkBlankChoice(choice) {
-            if (choice === currentWordObj.word) {
-                showFeedback(true, initBlanks);
-            } else {
-                showFeedback(false);
-            }
-        }
-
+        /* Game 3: Picture Match */
         function initPicMatch() {
             currentWordObj = getRandomWord();
-            document.getElementById('picMatch-emoji').textContent = currentWordObj.emoji;
+            updateMediaDisplay('picMatch-img', 'picMatch-emoji', currentWordObj);
 
             const choices = getMultipleChoices(currentWordObj.word);
             const container = document.getElementById('picMatch-choices');
@@ -423,22 +488,17 @@
                 const btn = document.createElement('button');
                 btn.className = "choice-btn";
                 btn.textContent = choice;
-                btn.onclick = () => checkPicChoice(choice);
+                btn.onclick = () => {
+                    if (choice === currentWordObj.word) showFeedback(true, initPicMatch);
+                    else showFeedback(false);
+                };
                 container.appendChild(btn);
             });
         }
 
-        function checkPicChoice(choice) {
-            if (choice === currentWordObj.word) {
-                showFeedback(true, initPicMatch);
-            } else {
-                showFeedback(false);
-            }
-        }
-
+        /* Game 4: Meaning Match */
         function initMeanMatch() {
             currentWordObj = getRandomWord();
-            // Show Chinese translation and meaning
             document.getElementById('meanMatch-text').innerHTML = `${currentWordObj.trans}<br><small style="font-size:0.6em; color:#888;">${currentWordObj.chi}</small>`;
 
             const choices = getMultipleChoices(currentWordObj.word);
@@ -449,22 +509,16 @@
                 const btn = document.createElement('button');
                 btn.className = "choice-btn";
                 btn.textContent = choice;
-                btn.onclick = () => checkMeanChoice(choice);
+                btn.onclick = () => {
+                    if (choice === currentWordObj.word) showFeedback(true, initMeanMatch);
+                    else showFeedback(false);
+                };
                 container.appendChild(btn);
             });
         }
 
-        function checkMeanChoice(choice) {
-            if (choice === currentWordObj.word) {
-                showFeedback(true, initMeanMatch);
-            } else {
-                showFeedback(false);
-            }
-        }
-
-        // Initialize the first game on load
         window.onload = function() {
-            initSpelling();
+            initCarousel();
         };
     </script>
 </body>
